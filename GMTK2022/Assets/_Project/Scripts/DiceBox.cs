@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class DiceBox : MonoBehaviour
 {
+    public static event Action<DiceResult> DiceRolled;
+
     public Camera cameraToPlaceWalls;
 
     [Header("Box edges")]
@@ -43,8 +46,18 @@ public class DiceBox : MonoBehaviour
 
                 mainDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
                 mainDice.transform.DOMove(new Vector3(0, wallsize / 2f, 0), 1f).SetEase(Ease.OutBack);
+
+                RollCompleted();
             }
         }
+    }
+
+    internal void RollCompleted()
+    {
+        int diceValue = UnityEngine.Random.Range(1, 7); // TEMP
+        DiceAbility rndAbility = DiceAbility.Attack; ///(DiceAbility)Enum.GetNames(typeof(DiceAbility)).Length - 1; // TEMP
+        DiceResult result = new DiceResult(rndAbility, diceValue); // TEMP
+        DiceRolled?.Invoke(result);
     }
 
     private void FixedUpdate()

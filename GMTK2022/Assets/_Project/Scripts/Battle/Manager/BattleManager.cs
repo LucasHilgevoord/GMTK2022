@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField] private DiceManager _diceManager;
+    [SerializeField] private DiceBox _diceBox;
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private Character _player;
     private BattlePhase _currentPhase;
@@ -19,6 +20,14 @@ public class BattleManager : MonoBehaviour
     {
         _currentPhase = BattlePhase.PlayerTurn;
         NextPhase(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnAttack(_player, _enemyManager.FocussedEnemy);
+        }
     }
 
     private void NextPhase(bool change = true)
@@ -42,24 +51,26 @@ public class BattleManager : MonoBehaviour
     private void OnPlayerTurn()
     {
         // Wait for dice to be rolled
-        DiceManager.DiceRolled += OnDiceRolled;
+        DiceBox.DiceRolled += OnDiceRolled;
     }
 
-    private void OnDiceRolled(object value)
+    private void OnDiceRolled(DiceResult result)
     {
-        DiceManager.DiceRolled -= OnDiceRolled;
+        DiceBox.DiceRolled -= OnDiceRolled;
         Debug.Log("Dice rolled");
 
-        ApplyAbility(null);
+        ApplyAbility(result);
     }
 
     private void ApplyAbility(DiceResult result)
     {
         Debug.Log("Apply ability");
-        Character caster = _currentPhase == BattlePhase.PlayerTurn ? _player : /*_enemyManager.FocussedEnemy*/ null;
-        Character target = _currentPhase == BattlePhase.PlayerTurn ? /*_enemyManager.FocussedEnemy*/ null : _player;
+        Character caster = _currentPhase == BattlePhase.PlayerTurn ? _player : _enemyManager.FocussedEnemy;
+        Character target = _currentPhase == BattlePhase.PlayerTurn ? _enemyManager.FocussedEnemy : _player;
         // Apply ability
-        
+
+        Debug.Log(result.diceAbility);
+
         switch (result.diceAbility)
         {
             default:
@@ -72,14 +83,34 @@ public class BattleManager : MonoBehaviour
             case DiceAbility.Heal:
                 break;
         }
-
-        NextPhase();
     }
 
     private void OnAttack(Character caster, Character target)
     {
         Debug.Log("Attack");
         // Apply attack
+        RectTransform c = caster._characterSprite;
+        RectTransform t = target._characterSprite;
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x - 100, 0.2f)); // Caster moves backwards
+        sequence.Append(c.DORotate(Vector3.forward * 6, 0.1f));
+        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + 200, 0.1f)); // Caster charges
+        sequence.Join(c.DORotate(Vector3.zero, 0.2f));
+        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + 100, 0.2f)); // Target gets hit
+        sequence.Join(t.DORotate(Vector3.forward * -6, 0.1f));
+        sequence.Append(c.DOAnchorPosX(0, 0.3f)); // Caster goes back
+        sequence.Join(t.DOAnchorPosX(0, 0.2f)); // Target goes back
+        sequence.Join(t.DORotate(Vector3.zero, 0.2f));
+        sequence.OnComplete(OnAbilityFinished);
+        sequence.Play();
+        // Move caster backwards
+        // Rotate caster a bit away from the target
+        // Charge the caster into the target
+        // Slowly Rotate caster back to oritinal rotation while charging
+        // Move target backwards
+        // Rotate target a bit away from the caster
+        // Move the caster and target back to original positions
         
         
     }
@@ -94,9 +125,14 @@ public class BattleManager : MonoBehaviour
         
     }
 
+    private void OnAbilityFinished()
+    {
+        //NextPhase();
+    }
+
     private void OnEnemyTurn()
     {
-        DiceManager.DiceRolled += OnDiceRolled;
-        _diceManager.RollDice();
+        DiceBox.DiceRolled += OnDiceRolled;
+        _diceBox.RollCompleted();
     }
 }

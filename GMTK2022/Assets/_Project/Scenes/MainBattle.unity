@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64f463edaaa2c64e9f561929f5f5cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testEnemy: {fileID: 17020923}
 --- !u!4 &241525496
 Transform:
   m_ObjectHideFlags: 0
@@ -265,7 +266,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &249964806
 PrefabInstance:
@@ -915,50 +916,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567496902}
   m_CullTransparentMesh: 1
---- !u!1 &635938582
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 635938584}
-  - component: {fileID: 635938583}
-  m_Layer: 0
-  m_Name: DiceManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &635938583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635938582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75d6af2611bf48e44b91dff41cf1c620, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &635938584
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 635938582}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 840.9276, y: 296.9932, z: -94.510765}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &661616719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,7 +1747,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1292842109
 GameObject:
@@ -2065,7 +2022,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1513886544
 GameObject:
@@ -2461,7 +2418,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1666528832
 GameObject:
@@ -2507,7 +2464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22fd0315a05f444bb711bfb6f57511c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _diceManager: {fileID: 635938583}
+  _diceBox: {fileID: 2004908211}
   _enemyManager: {fileID: 241525495}
   _player: {fileID: 981874269}
 --- !u!1 &1735632056
@@ -2974,7 +2931,7 @@ Transform:
   - {fileID: 1914608324}
   - {fileID: 1292842110}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2068819637
 GameObject:
