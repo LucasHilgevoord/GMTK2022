@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CharacterAnimType
+{ 
+    damage,
+    heal,
+    shield
+}
+
 public abstract class Character : MonoBehaviour
 {
     [Header("Character Config")]
@@ -26,6 +33,8 @@ public abstract class Character : MonoBehaviour
         }
         else
             currentHealth -= damage;
+
+        AnimateCharacter(CharacterAnimType.damage);
     }
 
     public virtual void Heal(float healAmount)
@@ -34,6 +43,8 @@ public abstract class Character : MonoBehaviour
 
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
+
+        AnimateCharacter(CharacterAnimType.heal);
     }
 
     public virtual void AddShield(float shieldAmount)
@@ -42,5 +53,27 @@ public abstract class Character : MonoBehaviour
 
         if (shieldAmount > maxHealth)
             shield = maxHealth;
+
+        AnimateCharacter(CharacterAnimType.shield);
     }
+
+    private void AnimateCharacter(CharacterAnimType animType)
+    {
+        switch (animType)
+        {
+            case CharacterAnimType.damage:
+                DamageAnimation();
+                break;
+            case CharacterAnimType.heal:
+                HealAnimation();
+                break;
+            case CharacterAnimType.shield:
+                ShieldAnimation();
+                break;
+        }
+        
+    }
+    public abstract void DamageAnimation();
+    public abstract void HealAnimation();
+    public abstract void ShieldAnimation();
 }
