@@ -22,16 +22,25 @@ public abstract class Character : MonoBehaviour
                 float leftoverDamage = damage - shield;
                 currentHealth -= leftoverDamage;
                 shield = 0;
-            }  
+            }
         }
         else
             currentHealth -= damage;
     }
+
     public virtual void Heal(float healAmount)
     {
-        if ((currentHealth + healAmount) <= maxHealth)
-            currentHealth += healAmount;
-        else
+        currentHealth += healAmount;
+
+        if (currentHealth > maxHealth)
             currentHealth = maxHealth;
-    } 
+    }
+
+    public virtual void AddShield(float shieldAmount)
+    {
+        shield += shieldAmount;
+
+        if (shieldAmount > maxHealth)
+            shield = maxHealth;
+    }
 }
