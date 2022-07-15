@@ -11,8 +11,8 @@ public enum CharacterAnimType
 
 public abstract class Character : MonoBehaviour
 {
-    private float maxHealth;
-    private string characterName;
+    protected float maxHealth;
+    protected string characterName;
 
     private float currentHealth;
     private float shield;

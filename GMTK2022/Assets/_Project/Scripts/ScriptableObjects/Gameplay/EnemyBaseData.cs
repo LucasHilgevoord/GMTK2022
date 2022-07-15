@@ -16,8 +16,8 @@ public class EnemyBaseData : ScriptableObject
     private float maxHealth;
 
     public int GetEnemyID() => enemyID;
-    public string GetHeroName() => enemyName;
-    public float GetHealth() => maxHealth;
+    public string GetEnemyName() => enemyName;
+    public float GetMaxHealth() => maxHealth;
 }
 
 
