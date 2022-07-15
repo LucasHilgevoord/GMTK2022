@@ -33,11 +33,6 @@ public class DiceBox : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ThrowRandomDice();
-        }
-
         if (watchDice)
         {
             if (mainDice.myRigidbody.velocity.x == 0 
@@ -94,7 +89,7 @@ public class DiceBox : MonoBehaviour
     /// <summary>
     /// Throws a random dice inside the box
     /// </summary>
-    void ThrowRandomDice()
+    public void ThrowRandomDice()
     {
         mainDice.myRigidbody.drag = 0f;
         mainDice.myRigidbody.angularDrag = 0f;
