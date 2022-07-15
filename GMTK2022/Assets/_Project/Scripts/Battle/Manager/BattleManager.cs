@@ -27,7 +27,6 @@ public class BattleManager : MonoBehaviour
             _currentPhase = _currentPhase.Next();
 
         Debug.Log("Next Phase " + _currentPhase);
-            
         switch (_currentPhase)
         {
             default:
@@ -54,13 +53,45 @@ public class BattleManager : MonoBehaviour
         ApplyAbility(null);
     }
 
-    private void ApplyAbility(object ability)
+    private void ApplyAbility(DiceResult result)
     {
         Debug.Log("Apply ability");
+        Character caster = _currentPhase == BattlePhase.PlayerTurn ? _player : /*_enemyManager.FocussedEnemy*/ null;
         Character target = _currentPhase == BattlePhase.PlayerTurn ? /*_enemyManager.FocussedEnemy*/ null : _player;
         // Apply ability
+        
+        switch (result.diceAbility)
+        {
+            default:
+            case DiceAbility.Attack:
+                OnAttack(caster, target);
+                break;
+            case DiceAbility.Defend:
+                OnDefend();
+                break;
+            case DiceAbility.Heal:
+                break;
+        }
 
         NextPhase();
+    }
+
+    private void OnAttack(Character caster, Character target)
+    {
+        Debug.Log("Attack");
+        // Apply attack
+        
+        
+    }
+
+    private void OnDefend()
+    {
+        
+    }
+
+    private void OnHeal()
+    {
+        
     }
 
     private void OnEnemyTurn()

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public enum DiceAbility
 {
-    public RectTransform _characterSprite;
+    Attack,
+    Defend,
+    Heal
 }
