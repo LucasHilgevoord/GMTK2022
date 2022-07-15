@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+using DG.Tweening;
 
 public enum CharacterAnimType
 { 
@@ -18,6 +21,11 @@ public abstract class Character : MonoBehaviour
     private float shield;
     //private Dice[] dices;
 
+    [Header("UI-Config")]
+    public Image healthBar;
+    public Image shieldBar;
+
+    #region virtual-methods
     public virtual void Damage(float damage)
     {
         if (shield > 0)
@@ -35,8 +43,8 @@ public abstract class Character : MonoBehaviour
             currentHealth -= damage;
 
         AnimateCharacter(CharacterAnimType.damage);
+        UpdateCharacterUI();
     }
-
     public virtual void Heal(float healAmount)
     {
         currentHealth += healAmount;
@@ -45,8 +53,8 @@ public abstract class Character : MonoBehaviour
             currentHealth = maxHealth;
 
         AnimateCharacter(CharacterAnimType.heal);
+        UpdateCharacterUI();
     }
-
     public virtual void AddShield(float shieldAmount)
     {
         shield += shieldAmount;
@@ -55,7 +63,15 @@ public abstract class Character : MonoBehaviour
             shield = maxHealth;
 
         AnimateCharacter(CharacterAnimType.shield);
+        UpdateCharacterUI();
     }
+    #endregion
+
+    #region abstract-methods
+    public abstract void DamageAnimation();
+    public abstract void HealAnimation();
+    public abstract void ShieldAnimation();
+    #endregion
 
     private void AnimateCharacter(CharacterAnimType animType)
     {
@@ -71,9 +87,10 @@ public abstract class Character : MonoBehaviour
                 ShieldAnimation();
                 break;
         }
-        
     }
-    public abstract void DamageAnimation();
-    public abstract void HealAnimation();
-    public abstract void ShieldAnimation();
+    private void UpdateCharacterUI()
+    {
+        healthBar.DOFillAmount(currentHealth / maxHealth, 0.2f);
+        shieldBar.DOFillAmount(shield / maxHealth, 0.2f);
+    }
 }
