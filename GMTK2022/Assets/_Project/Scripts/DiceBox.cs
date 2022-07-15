@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DiceBox : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class DiceBox : MonoBehaviour
     [Header("Dice Throws")]
     public Dice mainDice;
     public float forceStrength;
+    public float rotateStrength;
     private bool watchDice;
 
     private void Start()
@@ -34,6 +36,28 @@ public class DiceBox : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ThrowRandomDice();
+        }
+
+        if (watchDice)
+        {
+            if (mainDice.myRigidbody.velocity.x == 0 
+                && mainDice.myRigidbody.velocity.y == 0
+                && mainDice.myRigidbody.velocity.z == 0)
+            {
+                watchDice = false;
+
+                mainDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                mainDice.transform.DOMove(new Vector3(0, wallsize / 2f, 0), 1f).SetEase(Ease.OutBack);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (watchDice)
+        {
+            mainDice.myRigidbody.drag += 0.01f;
+            mainDice.myRigidbody.angularDrag += 0.01f;
         }
     }
 
@@ -64,7 +88,6 @@ public class DiceBox : MonoBehaviour
 
         leftWall.transform.localPosition = new Vector3((-boxWidth / 2) - wallsize / 2f, wallsize / 2f, 0);
         rightWall.transform.localPosition = new Vector3((boxWidth / 2) + wallsize / 2f, wallsize / 2f, 0);
-
     }
 
 
@@ -73,10 +96,16 @@ public class DiceBox : MonoBehaviour
     /// </summary>
     void ThrowRandomDice()
     {
+        mainDice.myRigidbody.drag = 0f;
+        mainDice.myRigidbody.angularDrag = 0f;
+
+        mainDice.myRigidbody.constraints = RigidbodyConstraints.None;
         mainDice.SetRandomDice();
 
         mainDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
+        mainDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
 
+        mainDice.myRigidbody.angularVelocity = new Vector3(UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength));
         mainDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
 
         watchDice = true;

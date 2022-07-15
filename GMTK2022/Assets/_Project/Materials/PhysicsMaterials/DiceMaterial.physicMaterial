@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: DiceMaterial
   dynamicFriction: 0.8
   staticFriction: 0
-  bounciness: 1
+  bounciness: 0.2
   frictionCombine: 0
   bounceCombine: 0
