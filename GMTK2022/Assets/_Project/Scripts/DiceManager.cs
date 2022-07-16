@@ -12,8 +12,6 @@ public class DiceManager : MonoBehaviour
 
     private int _currentDiceIndex;
 
-    public Sprite[] diceAbilitySprites;
-
     private Dice currentDice;
 
     /// <summary>
@@ -45,40 +43,35 @@ public class DiceManager : MonoBehaviour
 
     public Dice SetDice(DiceType type, DiceAbility[] abilities)
     {
-        int lengthOfAbilities = 0;
+        int diceSideAmount = 0;
 
         switch (type)
         {
             case DiceType.D4:
-                lengthOfAbilities = 4;
+                diceSideAmount = 4;
                 break;
             case DiceType.D6:
-                lengthOfAbilities = 6;
+                diceSideAmount = 6;
                 break;
             case DiceType.D8:
-                lengthOfAbilities = 8;
+                diceSideAmount = 8;
                 break;
             case DiceType.D10:
-                lengthOfAbilities = 10;
+                diceSideAmount = 10;
                 break;
             case DiceType.D12:
-                lengthOfAbilities = 12;
+                diceSideAmount = 12;
                 break;
             case DiceType.D20:
-                lengthOfAbilities = 20;
+                diceSideAmount = 20;
                 break;
-        }
-
-        if (abilities.Length > lengthOfAbilities || abilities.Length < lengthOfAbilities)
-        {
-            throw new Exception("Not enough abilities for the dice you want to create! | " + abilities.Length + "  |  " + lengthOfAbilities);
         }
 
         // Set the dice
         currentDice = SetDice(type);
 
         // Set all the sides
-        SetSides(abilities);
+        SetSides(diceSideAmount);
 
         return currentDice;
     }
@@ -105,13 +98,11 @@ public class DiceManager : MonoBehaviour
         return SetDice(type, diceSet.ToArray());
     }
 
-    private void SetSides(DiceAbility[] abilities)
+    private void SetSides(int diceSideAmount)
     {
-        abilities.Shuffle();
-
-        for (int i = 0; i < abilities.Length; i++)
+        for (int i = 0; i < diceSideAmount; i++)
         {
-            currentDice.SetSide(diceAbilitySprites[(int)abilities[i]], abilities[i], i);
+            currentDice.SetSide(i+1, i);
         }
     }
 }

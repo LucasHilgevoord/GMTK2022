@@ -76,21 +76,21 @@ public class BattleManager : MonoBehaviour
         Character target = _currentPhase == BattlePhase.PlayerTurn ? _enemyManager.FocussedEnemy : _player;
         // Apply ability
 
-        Debug.Log(result.diceAbility);
+        Debug.Log("DICE VALUE: " + result.diceValue);
 
-        switch (result.diceAbility)
-        {
-            default:
-            case DiceAbility.Attack:
-                OnAttack(caster, target, result.diceValue);
-                break;
-            case DiceAbility.Defend:
-                OnDefend(caster, result.diceValue);
-                break;
-            case DiceAbility.Heal:
-                OnHeal(caster, result.diceValue);
-                break;
-        }
+        //switch (result.diceValue)
+        //{
+        //    default:
+        //    case DiceAbility.Attack:
+        //        OnAttack(caster, target, result.diceValue);
+        //        break;
+        //    case DiceAbility.Defend:
+        //        OnDefend(caster, result.diceValue);
+        //        break;
+        //    case DiceAbility.Heal:
+        //        OnHeal(caster, result.diceValue);
+        //        break;
+        //}
     }
 
     private void OnAttack(Character caster, Character target, int damage)

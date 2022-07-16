@@ -66,9 +66,8 @@ public class DiceBox : MonoBehaviour
 
     internal void RollCompleted()
     {
-        DiceAbility ability = DecideResult();
-        int diceValue = currentDice.sides.Length;
-        DiceResult result = new DiceResult(ability, diceValue);
+        int diceResult = DecideResult();
+        DiceResult result = new DiceResult(diceResult);
         DiceRolled?.Invoke(result);
     }
 
@@ -79,9 +78,9 @@ public class DiceBox : MonoBehaviour
         int rndDice = UnityEngine.Random.Range(0, dices.Length);
         Dice dice = dices[rndDice];
 
-        DiceAbility ability = dice.sides[UnityEngine.Random.Range(0, dice.sides.Length)].type;
+        //DiceAbility ability = dice.sides[UnityEngine.Random.Range(0, dice.sides.Length)].type;
         int diceValue = dice.sides.Length;
-        DiceResult result = new DiceResult(ability, diceValue);
+        DiceResult result = new DiceResult(diceValue);
         DiceRolled?.Invoke(result);
     }
 
@@ -90,16 +89,16 @@ public class DiceBox : MonoBehaviour
         yield return new WaitForSeconds(hideDiceCooldown);
         diceManager.HideDice();
     }
-    private DiceAbility DecideResult()
+    private int DecideResult()
     {
         Ray r = cameraToPlaceWalls.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         RaycastHit info;
         Physics.Raycast(r, out info, 100f, diceSideLayer);
 
         if (info.collider != null)
-            return info.collider.GetComponent<DiceSide>().type;
+            return info.collider.GetComponent<DiceSide>().diceSideNumber;
 
-        return DiceAbility.Attack;
+        return 1;
     }
 
     private void FixedUpdate()

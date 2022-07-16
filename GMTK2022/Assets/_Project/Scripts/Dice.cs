@@ -15,9 +15,9 @@ public class Dice : MonoBehaviour
         myRigidbody = this.GetComponent<Rigidbody>();
     }
 
-    internal void SetSide(Sprite sprite, DiceAbility type, int index)
+    internal void SetSide(int diceSideNumber, int index)
     {
-        sides[index].type = type;
-        sides[index].spriteRenderer.sprite = sprite;
+        sides[index].diceSideNumber = diceSideNumber;
+        sides[index].diceSideText.SetText(diceSideNumber.ToString());
     }
 }

@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class DiceSide : MonoBehaviour
 {
-    public DiceAbility type;
-    internal SpriteRenderer spriteRenderer;
+    internal TextMeshPro diceSideText;
+    internal int diceSideNumber;
 
     private void Awake()
     {
-        spriteRenderer = this.GetComponent<SpriteRenderer>();
+        diceSideText = this.GetComponent<TextMeshPro>();
     }
 }
