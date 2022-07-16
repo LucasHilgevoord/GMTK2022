@@ -6,6 +6,5 @@ public enum BattlePhase
 {
     PickAbility,
     ThrowDice,
-    Compare,
     Ability
 }

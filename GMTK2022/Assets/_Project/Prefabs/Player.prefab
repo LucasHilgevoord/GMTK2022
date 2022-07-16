@@ -7,10 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6733903359753197176, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: spineSuffix
       value: player
       objectReference: {fileID: 0}
+    - target: {fileID: 6733903359753197176, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: battleEffectHandler
+      value: 
+      objectReference: {fileID: 3889411114577316763}
     - target: {fileID: 9170798192360812244, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -101,3 +109,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+--- !u!114 &3889411114577316763 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1452634103102345285, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+  m_PrefabInstance: {fileID: 2436796802685393886}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8e1aa977cd6ae41a5ca0d4013f4fa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

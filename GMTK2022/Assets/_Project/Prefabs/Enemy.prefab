@@ -7,6 +7,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 206.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 442575474278057216, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 125.310005
+      objectReference: {fileID: 0}
     - target: {fileID: 6733903359753197176, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: spineSuffix
       value: enemy

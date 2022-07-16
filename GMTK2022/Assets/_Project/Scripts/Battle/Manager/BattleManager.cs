@@ -11,8 +11,11 @@ public class BattleManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] private EnemyManager _enemyManager;
     [SerializeField] private CardsManager _cardsManager;
-    [SerializeField] private Character _player;
     private BattlePhase _currentPhase;
+
+    [Header("Characters")]
+    [SerializeField] private Character _player;
+    private CardAbility _playerAbility, _enemyAbility;
 
     [Header("Attack")]
     private float _chargeBack = 100;
@@ -40,22 +43,76 @@ public class BattleManager : MonoBehaviour
         switch (_currentPhase)
         {
             case BattlePhase.PickAbility:
+                CardsManager.CardPicked += OnAbiliyPicked;
                 _cardsManager.ShowCards();
                 break;
             case BattlePhase.ThrowDice:
-                break;
-            case BattlePhase.Compare:
+                NextPhase(); // TEMP
                 break;
             case BattlePhase.Ability:
+                CheckAbility(UnityEngine.Random.Range(1, 20), UnityEngine.Random.Range(1, 20));
                 break;
             default:
                 break;
         }
-
-        Debug.Log("Next Phase " + _currentPhase);
     }
 
-    private void OnAttack(Character caster, Character target, int damage)
+    private void OnAbiliyPicked(CardAbility ability)
+    {
+        CardsManager.CardPicked -= OnAbiliyPicked;
+        _playerAbility = ability;
+        _enemyAbility = (CardAbility)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CardAbility)).Length - 1);
+        DisplayAbilityPick();
+    }
+
+    private void DisplayAbilityPick()
+    {
+        _player.iconEffect.ShowIcon(_playerAbility);
+        _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyAbility);
+        NextPhase();
+    }
+
+    private void CheckAbility(int playerValue, int attackerValue)
+    {
+        if (_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Attack)
+        {
+            AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, false);
+            AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue, false);
+        } 
+        else if ((_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Parry) ||
+            (_playerAbility == CardAbility.Parry && _enemyAbility == CardAbility.Attack))
+        {
+            OnParry(playerValue, attackerValue);
+        } else
+        {
+            if (_playerAbility == CardAbility.Attack)
+            {
+                AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, true);
+            }
+            else if (_enemyAbility == CardAbility.Attack)
+            {
+                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue, true);
+            }
+            
+            if (_playerAbility == CardAbility.Heal)
+            {
+                HealTarget(_player, playerValue);
+            } else if (_enemyAbility == CardAbility.Heal)
+            {
+                HealTarget(_enemyManager.FocussedEnemy, attackerValue);
+            }
+        }
+
+        // TESTING
+        IEnumerator waitForNextPhase()
+        {
+            yield return new WaitForSeconds(2);
+            NextPhase();
+        }
+        StartCoroutine(waitForNextPhase());
+    }
+
+    private void AttackTarget(Character caster, Character target, int damage, bool useTargetKnockback = true)
     {
         // Apply attack
         RectTransform c = caster._characterSprite;
@@ -72,34 +129,46 @@ public class BattleManager : MonoBehaviour
         sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + _chargeFront * dir, 0.2f).OnStart(() =>
         {
             caster.PlayAnimation("attack_1");
+        }).OnComplete(() =>
+        {
+            // Damage the character here if both enemies attack eachother
+            if (!useTargetKnockback)
+                target.Damage(damage);
         }));
         sequence.Join(c.DORotate(Vector3.zero, 0.2f));
 
         // Target gets hit
-        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(() =>
-        { 
-            target.Damage(damage);
-            target.PlayAnimation("damage_1");
-        }));
-        sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
-        
+        if (useTargetKnockback)
+        {
+            sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(() =>
+            {
+                target.Damage(damage);
+                target.PlayAnimation("damage_1");
+            }));
+            sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
+        }
+
         // Move entities back to the original pos
         sequence.Append(c.DOAnchorPosX(0, 0.2f).OnStart(() =>
         {
             caster.PlayAnimation("attack_2");
         }));
-        sequence.Join(t.DOAnchorPosX(0, 0.2f).OnStart(() =>
+
+        if (useTargetKnockback)
         {
-            caster.PlayAnimation("damage_2");
-        }));
-        sequence.Join(t.DORotate(Vector3.zero, 0.2f));
+            sequence.Join(t.DOAnchorPosX(0, 0.2f).OnStart(() =>
+            {
+                caster.PlayAnimation("damage_2");
+            }));
+            sequence.Join(t.DORotate(Vector3.zero, 0.2f));
+        }
         sequence.OnComplete(() => 
         {
             caster.PlayAnimation("idle", true);
             if (target.IsAlive)
             {
                 target.PlayAnimation("idle", true);
-                NextPhase();
+                //onComplete?.Invoke();
             }
             else
             {
@@ -115,18 +184,37 @@ public class BattleManager : MonoBehaviour
             SoundManager.Instance.Play(Sounds.enemyAttack);
     }
 
-    private void OnDefend(Character caster, int shield)
+    private void OnParry(int playerValue, int attackerValue)
+    {
+        bool playerWins = playerValue >= attackerValue;
+        CardAbility winnerAbility = playerWins ? _playerAbility : _playerAbility;
+        int winnerValue = playerWins ? playerValue : attackerValue;
+        int loserValue = playerWins ? attackerValue : playerValue;
+        Character winner = playerWins ? _player : _enemyManager.FocussedEnemy;
+        Character loser = playerWins ? _enemyManager.FocussedEnemy : _player;
+
+
+        if (winnerAbility == CardAbility.Parry)
+        {
+            AttackTarget(winner, loser, loserValue);
+            AddShield(winner, winnerValue - loserValue);
+        }
+        else
+            AttackTarget(winner, loser, winnerValue);
+
+        // Potential: Add shield if the parry wins
+    }
+
+    private void AddShield(Character caster, int shield)
     {
         caster.AddShield(shield);
         SoundManager.Instance.Play(Sounds.addShield);  // sfx
-        NextPhase();
     }
 
-    private void OnHeal(Character caster, int health)
+    private void HealTarget(Character caster, int health)
     {
         caster.Heal(health);
         SoundManager.Instance.Play(Sounds.heal);  // sfx
-        NextPhase();
     }
 
     private void OnTargetKilled(Character target)

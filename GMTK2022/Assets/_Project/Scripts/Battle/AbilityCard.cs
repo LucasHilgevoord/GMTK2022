@@ -16,10 +16,17 @@ public class AbilityCard : MonoBehaviour
     public event Action<CardActions, AbilityCard> CardAction;
 
     [SerializeField] private TextMeshProUGUI _title;
+    public RectTransform rect;
     public RectTransform elements;
+    public Quaternion startRot;
 
     public CardAbility Ability => _ability;
     [SerializeField] private CardAbility _ability;
+
+    private void Start()
+    {
+        startRot = rect.rotation;
+    }
 
     public void OnHoverEnter()
     {

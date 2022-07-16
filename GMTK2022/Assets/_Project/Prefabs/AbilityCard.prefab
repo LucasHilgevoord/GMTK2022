@@ -525,5 +525,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _title: {fileID: 4738695091127760954}
+  rect: {fileID: 4738695092508062257}
   elements: {fileID: 1988349626177674758}
   _ability: 0

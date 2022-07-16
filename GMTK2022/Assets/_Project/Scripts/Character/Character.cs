@@ -28,7 +28,6 @@ public class Character : MonoBehaviour
 
     private int currentHealth;
     private int currentShield;
-    public Dice[] dices; // ASSIGN THROUGH CHARACTER DATA/INVENTORY
     public bool IsAlive { get { return currentHealth > 0; } }
 
     [Header("UI-Config")]
@@ -37,6 +36,7 @@ public class Character : MonoBehaviour
     public CanvasGroup dialogueBox;
     public TextMeshProUGUI dialogueText;
     public BattleEffectHandler battleEffectHandler;
+    public AbilityIconEffect iconEffect;
 
     [Header("Animations")]
     public Image shadow;
