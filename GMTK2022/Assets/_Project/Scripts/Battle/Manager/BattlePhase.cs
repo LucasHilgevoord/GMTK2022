@@ -4,6 +4,8 @@ using UnityEngine;
 
 public enum BattlePhase
 {
-    PlayerTurn,
-    EnemyTurn,
+    PickAbility,
+    ThrowDice,
+    Compare,
+    Ability
 }

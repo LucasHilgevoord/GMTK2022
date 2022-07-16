@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DiceAbility
+public enum CardAbility
 {
     Attack,
-    Defend,
+    Parry,
     Heal
 }

@@ -7,7 +7,10 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private DiceBox _diceBox;
+    
+    [Header("Managers")]
     [SerializeField] private EnemyManager _enemyManager;
+    [SerializeField] private CardsManager _cardsManager;
     [SerializeField] private Character _player;
     private BattlePhase _currentPhase;
 
@@ -25,16 +28,8 @@ public class BattleManager : MonoBehaviour
 
     private void Initialize()
     {
-        _currentPhase = BattlePhase.PlayerTurn;
+        _currentPhase = BattlePhase.PickAbility;
         NextPhase(false);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnAttack(_player, _enemyManager.FocussedEnemy, 0);
-        }
     }
 
     private void NextPhase(bool change = true)
@@ -42,55 +37,22 @@ public class BattleManager : MonoBehaviour
         if (change)
             _currentPhase = _currentPhase.Next();
 
-        Debug.Log("Next Phase " + _currentPhase);
         switch (_currentPhase)
         {
-            default:
-            case BattlePhase.PlayerTurn:
-                OnPlayerTurn();
+            case BattlePhase.PickAbility:
+                _cardsManager.ShowCards();
                 break;
-            case BattlePhase.EnemyTurn:
-                OnEnemyTurn();
+            case BattlePhase.ThrowDice:
+                break;
+            case BattlePhase.Compare:
+                break;
+            case BattlePhase.Ability:
+                break;
+            default:
                 break;
         }
-    }
-    
-    private void OnPlayerTurn()
-    {
-        // Wait for dice to be rolled
-        DiceBox.DiceRolled += OnDiceRolled;
-    }
 
-    private void OnDiceRolled(DiceResult result)
-    {
-        DiceBox.DiceRolled -= OnDiceRolled;
-        Debug.Log("Dice rolled");
-
-        ApplyAbility(result);
-    }
-
-    private void ApplyAbility(DiceResult result)
-    {
-        Debug.Log("Apply ability");
-        Character caster = _currentPhase == BattlePhase.PlayerTurn ? _player : _enemyManager.FocussedEnemy;
-        Character target = _currentPhase == BattlePhase.PlayerTurn ? _enemyManager.FocussedEnemy : _player;
-        // Apply ability
-
-        Debug.Log(result.diceAbility);
-
-        switch (result.diceAbility)
-        {
-            default:
-            case DiceAbility.Attack:
-                OnAttack(caster, target, result.diceValue);
-                break;
-            case DiceAbility.Defend:
-                OnDefend(caster, result.diceValue);
-                break;
-            case DiceAbility.Heal:
-                OnHeal(caster, result.diceValue);
-                break;
-        }
+        Debug.Log("Next Phase " + _currentPhase);
     }
 
     private void OnAttack(Character caster, Character target, int damage)
@@ -185,18 +147,5 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log("You win!");
         }
-    }
-
-    private void OnEnemyTurn()
-    {
-        DiceBox.DiceRolled += OnDiceRolled;
-
-        IEnumerator wait()
-        {
-            yield return new WaitForSeconds(1);
-            _diceBox.RollAIDice(_enemyManager.FocussedEnemy.dices);
-        };
-
-        StartCoroutine(wait());
     }
 }

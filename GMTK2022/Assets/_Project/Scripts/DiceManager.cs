@@ -43,7 +43,7 @@ public class DiceManager : MonoBehaviour
         dices[_currentDiceIndex].gameObject.SetActive(false);
     }
 
-    public Dice SetDice(DiceType type, DiceAbility[] abilities)
+    public Dice SetDice(DiceType type, CardAbility[] abilities)
     {
         int lengthOfAbilities = 0;
 
@@ -85,27 +85,27 @@ public class DiceManager : MonoBehaviour
 
     public Dice SetDice(DiceType type, int attacks, int defends, int heals)
     {
-        List<DiceAbility> diceSet = new List<DiceAbility>();
+        List<CardAbility> diceSet = new List<CardAbility>();
 
         for (int i = 0; i < attacks; i++)
         {
-            diceSet.Add(DiceAbility.Attack);
+            diceSet.Add(CardAbility.Attack);
         }
 
         for (int i = 0; i < defends; i++)
         {
-            diceSet.Add(DiceAbility.Defend);
+            diceSet.Add(CardAbility.Parry);
         }
 
         for (int i = 0; i < heals; i++)
         {
-            diceSet.Add(DiceAbility.Heal);
+            diceSet.Add(CardAbility.Heal);
         }
 
         return SetDice(type, diceSet.ToArray());
     }
 
-    private void SetSides(DiceAbility[] abilities)
+    private void SetSides(CardAbility[] abilities)
     {
         abilities.Shuffle();
 

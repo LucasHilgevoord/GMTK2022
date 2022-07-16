@@ -1,216 +1,531 @@
 
 skeleton.png
-size: 1024,1024
+size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 DICEGUY/body
   rotate: false
-  xy: 663, 221
+  xy: 863, 1708
   size: 343, 337
   orig: 343, 337
   offset: 0, 0
   index: -1
 DICEGUY/eyelids_1
   rotate: false
-  xy: 411, 954
+  xy: 1759, 1114
   size: 145, 67
   orig: 145, 67
   offset: 0, 0
   index: -1
 ENEMY_1/eyelids_1
   rotate: false
-  xy: 411, 954
+  xy: 1759, 1114
+  size: 145, 67
+  orig: 145, 67
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyelids_1
+  rotate: false
+  xy: 1759, 1114
+  size: 145, 67
+  orig: 145, 67
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyelids_1
+  rotate: false
+  xy: 1759, 1114
+  size: 145, 67
+  orig: 145, 67
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyelids_1
+  rotate: false
+  xy: 1759, 1114
   size: 145, 67
   orig: 145, 67
   offset: 0, 0
   index: -1
 DICEGUY/eyelids_2
   rotate: false
-  xy: 704, 951
+  xy: 1892, 1699
   size: 146, 70
   orig: 146, 70
   offset: 0, 0
   index: -1
 ENEMY_1/eyelids_2
   rotate: false
-  xy: 704, 951
+  xy: 1892, 1699
+  size: 146, 70
+  orig: 146, 70
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyelids_2
+  rotate: false
+  xy: 1892, 1699
+  size: 146, 70
+  orig: 146, 70
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyelids_2
+  rotate: false
+  xy: 1892, 1699
+  size: 146, 70
+  orig: 146, 70
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyelids_2
+  rotate: false
+  xy: 1892, 1699
   size: 146, 70
   orig: 146, 70
   offset: 0, 0
   index: -1
 DICEGUY/eyelids_3
-  rotate: false
-  xy: 852, 942
+  rotate: true
+  xy: 352, 1534
   size: 147, 79
   orig: 147, 79
   offset: 0, 0
   index: -1
 ENEMY_1/eyelids_3
-  rotate: false
-  xy: 852, 942
+  rotate: true
+  xy: 352, 1534
+  size: 147, 79
+  orig: 147, 79
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyelids_3
+  rotate: true
+  xy: 352, 1534
+  size: 147, 79
+  orig: 147, 79
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyelids_3
+  rotate: true
+  xy: 352, 1534
+  size: 147, 79
+  orig: 147, 79
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyelids_3
+  rotate: true
+  xy: 352, 1534
   size: 147, 79
   orig: 147, 79
   offset: 0, 0
   index: -1
 DICEGUY/eyes_1
   rotate: false
-  xy: 159, 854
+  xy: 1034, 1248
   size: 156, 99
   orig: 156, 99
   offset: 0, 0
   index: -1
 DICEGUY/eyes_2
   rotate: false
-  xy: 317, 853
+  xy: 1892, 1946
   size: 153, 99
   orig: 153, 99
   offset: 0, 0
   index: -1
 DICEGUY/eyes_3
-  rotate: false
-  xy: 2, 746
+  rotate: true
+  xy: 1067, 1493
   size: 155, 136
   orig: 155, 136
   offset: 0, 0
   index: -1
 DICEGUY/l_hand
-  rotate: true
-  xy: 267, 955
+  rotate: false
+  xy: 1976, 992
   size: 66, 142
   orig: 66, 142
   offset: 0, 0
   index: -1
 DICEGUY/l_leg
   rotate: true
-  xy: 472, 832
+  xy: 833, 1341
   size: 119, 199
   orig: 119, 199
   offset: 0, 0
   index: -1
 DICEGUY/mouth_1
   rotate: false
-  xy: 2, 1011
-  size: 13, 10
-  orig: 13, 10
-  offset: 0, 0
-  index: -1
-ENEMY_1/mouth_1
-  rotate: false
-  xy: 2, 1011
+  xy: 1530, 1656
   size: 13, 10
   orig: 13, 10
   offset: 0, 0
   index: -1
 DICEGUY/mouth_2
-  rotate: false
-  xy: 182, 965
+  rotate: true
+  xy: 974, 1256
   size: 83, 56
   orig: 83, 56
   offset: 0, 0
   index: -1
 DICEGUY/r_hand
   rotate: false
-  xy: 362, 688
+  xy: 1043, 1349
   size: 161, 142
   orig: 161, 142
   offset: 0, 0
   index: -1
 DICEGUY/r_leg
   rotate: true
-  xy: 525, 645
+  xy: 427, 1221
   size: 174, 199
   orig: 174, 199
   offset: 0, 0
   index: -1
 ENEMY_1/body
   rotate: true
-  xy: 308, 308
-  size: 335, 353
-  orig: 335, 353
-  offset: 0, 0
+  xy: 1553, 1710
+  size: 335, 337
+  orig: 343, 337
+  offset: 7, 0
   index: -1
 ENEMY_1/body_2
   rotate: false
-  xy: 2, 430
+  xy: 1208, 1413
   size: 304, 298
-  orig: 304, 298
-  offset: 0, 0
+  orig: 343, 337
+  offset: 23, 14
   index: -1
 ENEMY_1/extra_thing_1
   rotate: false
-  xy: 726, 560
+  xy: 1514, 1320
   size: 275, 257
   orig: 275, 257
   offset: 0, 0
   index: -1
 ENEMY_1/extra_thing_2
-  rotate: false
-  xy: 62, 983
+  rotate: true
+  xy: 1791, 1519
+  size: 58, 38
+  orig: 58, 38
+  offset: 0, 0
+  index: -1
+ENEMY_3/extra_thing_2
+  rotate: true
+  xy: 1791, 1519
   size: 58, 38
   orig: 58, 38
   offset: 0, 0
   index: -1
 ENEMY_1/extra_thing_3
-  rotate: false
-  xy: 122, 983
+  rotate: true
+  xy: 1791, 1459
+  size: 58, 38
+  orig: 58, 38
+  offset: 0, 0
+  index: -1
+ENEMY_3/extra_thing_3
+  rotate: true
+  xy: 1791, 1459
   size: 58, 38
   orig: 58, 38
   offset: 0, 0
   index: -1
 ENEMY_1/eyes_1
   rotate: false
-  xy: 2, 884
+  xy: 817, 1242
   size: 155, 97
   orig: 155, 97
   offset: 0, 0
   index: -1
 ENEMY_1/eyes_2
   rotate: false
-  xy: 2, 884
+  xy: 817, 1242
   size: 155, 97
   orig: 155, 97
   offset: 0, 0
   index: -1
 ENEMY_1/eyes_3
   rotate: false
-  xy: 2, 884
+  xy: 817, 1242
   size: 155, 97
   orig: 155, 97
   offset: 0, 0
   index: -1
 ENEMY_1/l_hand
-  rotate: true
-  xy: 558, 953
+  rotate: false
+  xy: 352, 1241
   size: 68, 144
   orig: 68, 144
   offset: 0, 0
   index: -1
 ENEMY_1/l_leg
   rotate: true
-  xy: 819, 819
+  xy: 1843, 1576
   size: 121, 202
   orig: 121, 202
   offset: 0, 0
   index: -1
-ENEMY_1/mouth_2
+ENEMY_1/mouth_1
   rotate: false
-  xy: 17, 988
+  xy: 1514, 1655
+  size: 14, 11
+  orig: 14, 11
+  offset: 0, 0
+  index: -1
+ENEMY_2/mouth_1
+  rotate: false
+  xy: 1514, 1655
+  size: 14, 11
+  orig: 14, 11
+  offset: 0, 0
+  index: -1
+ENEMY_3/mouth_1
+  rotate: false
+  xy: 1514, 1655
+  size: 14, 11
+  orig: 14, 11
+  offset: 0, 0
+  index: -1
+ENEMY_4/mouth_1
+  rotate: false
+  xy: 1514, 1655
+  size: 14, 11
+  orig: 14, 11
+  offset: 0, 0
+  index: -1
+ENEMY_1/mouth_2
+  rotate: true
+  xy: 1514, 1668
+  size: 43, 33
+  orig: 43, 33
+  offset: 0, 0
+  index: -1
+ENEMY_2/mouth_2
+  rotate: true
+  xy: 1514, 1668
+  size: 43, 33
+  orig: 43, 33
+  offset: 0, 0
+  index: -1
+ENEMY_3/mouth_2
+  rotate: true
+  xy: 1514, 1668
+  size: 43, 33
+  orig: 43, 33
+  offset: 0, 0
+  index: -1
+ENEMY_4/mouth_2
+  rotate: true
+  xy: 1514, 1668
   size: 43, 33
   orig: 43, 33
   offset: 0, 0
   index: -1
 ENEMY_1/r_hand
-  rotate: true
-  xy: 673, 821
+  rotate: false
+  xy: 1373, 1267
   size: 128, 144
   orig: 128, 144
   offset: 0, 0
   index: -1
 ENEMY_1/r_leg
   rotate: true
-  xy: 159, 730
+  xy: 427, 1397
   size: 121, 201
   orig: 121, 201
+  offset: 0, 0
+  index: -1
+ENEMY_2/body
+  rotate: false
+  xy: 1208, 1713
+  size: 343, 332
+  orig: 343, 332
+  offset: 0, 0
+  index: -1
+ENEMY_2/body_2
+  rotate: false
+  xy: 2, 1344
+  size: 348, 337
+  orig: 348, 337
+  offset: 0, 0
+  index: -1
+ENEMY_2/extra_thing_1
+  rotate: true
+  xy: 1791, 1282
+  size: 169, 218
+  orig: 169, 218
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyes_1
+  rotate: false
+  xy: 1503, 1221
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyes_2
+  rotate: false
+  xy: 1503, 1221
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_2/eyes_3
+  rotate: false
+  xy: 1503, 1221
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_2/l_hand
+  rotate: false
+  xy: 352, 1387
+  size: 73, 145
+  orig: 73, 145
+  offset: 0, 0
+  index: -1
+ENEMY_2/l_leg
+  rotate: true
+  xy: 1831, 1453
+  size: 121, 202
+  orig: 121, 202
+  offset: 0, 0
+  index: -1
+ENEMY_2/r_hand
+  rotate: true
+  xy: 1892, 1771
+  size: 173, 151
+  orig: 173, 151
+  offset: 0, 0
+  index: -1
+ENEMY_2/r_leg
+  rotate: true
+  xy: 840, 1462
+  size: 121, 201
+  orig: 121, 201
+  offset: 0, 0
+  index: -1
+ENEMY_3/body
+  rotate: false
+  xy: 2, 1683
+  size: 430, 362
+  orig: 430, 362
+  offset: 0, 0
+  index: -1
+ENEMY_3/body_2
+  rotate: false
+  xy: 1067, 1650
+  size: 138, 56
+  orig: 138, 56
+  offset: 0, 0
+  index: -1
+ENEMY_3/extra_thing_1
+  rotate: false
+  xy: 1549, 1579
+  size: 292, 129
+  orig: 292, 129
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyes_1
+  rotate: true
+  xy: 1660, 1163
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyes_2
+  rotate: true
+  xy: 1660, 1163
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_3/eyes_3
+  rotate: true
+  xy: 1660, 1163
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_3/l_hand
+  rotate: false
+  xy: 1916, 1136
+  size: 68, 144
+  orig: 68, 144
+  offset: 0, 0
+  index: -1
+ENEMY_3/l_leg
+  rotate: true
+  xy: 630, 1342
+  size: 121, 201
+  orig: 121, 201
+  offset: 0, 0
+  index: -1
+ENEMY_3/r_hand
+  rotate: false
+  xy: 628, 1196
+  size: 187, 144
+  orig: 187, 144
+  offset: 0, 0
+  index: -1
+ENEMY_3/r_leg
+  rotate: true
+  xy: 863, 1585
+  size: 121, 202
+  orig: 121, 202
+  offset: 0, 0
+  index: -1
+ENEMY_4/body
+  rotate: false
+  xy: 434, 1643
+  size: 427, 402
+  orig: 427, 402
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyes_1
+  rotate: false
+  xy: 1759, 1183
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyes_2
+  rotate: false
+  xy: 1759, 1183
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_4/eyes_3
+  rotate: false
+  xy: 1759, 1183
+  size: 155, 97
+  orig: 155, 97
+  offset: 0, 0
+  index: -1
+ENEMY_4/l_hand
+  rotate: false
+  xy: 1906, 990
+  size: 68, 144
+  orig: 68, 144
+  offset: 0, 0
+  index: -1
+ENEMY_4/l_leg
+  rotate: true
+  xy: 433, 1520
+  size: 121, 202
+  orig: 121, 202
+  offset: 0, 0
+  index: -1
+ENEMY_4/r_hand
+  rotate: false
+  xy: 1206, 1267
+  size: 165, 144
+  orig: 165, 144
+  offset: 0, 0
+  index: -1
+ENEMY_4/r_leg
+  rotate: true
+  xy: 637, 1465
+  size: 176, 201
+  orig: 176, 201
   offset: 0, 0
   index: -1

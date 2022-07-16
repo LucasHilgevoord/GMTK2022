@@ -2,7 +2,7 @@
 
 public class DiceSide : MonoBehaviour
 {
-    public DiceAbility type;
+    public CardAbility type;
     internal SpriteRenderer spriteRenderer;
 
     private void Awake()
