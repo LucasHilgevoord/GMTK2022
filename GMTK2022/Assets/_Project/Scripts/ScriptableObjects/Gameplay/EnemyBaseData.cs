@@ -13,11 +13,11 @@ public class EnemyBaseData : ScriptableObject
     private string enemyName;
 
     [SerializeField]
-    private float maxHealth;
+    private int maxHealth;
 
     public int GetEnemyID() => enemyID;
     public string GetEnemyName() => enemyName;
-    public float GetMaxHealth() => maxHealth;
+    public int GetMaxHealth() => maxHealth;
 }
 
 

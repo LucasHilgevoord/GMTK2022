@@ -7,18 +7,20 @@ using DG.Tweening;
 
 public enum CharacterAnimType
 { 
-    damage,
+    attack,
     heal,
-    shield
+    defend
 }
 
 public abstract class Character : MonoBehaviour
 {
-    protected float maxHealth;
+    public RectTransform _characterSprite;
+
+    protected int maxHealth = 100;
     protected string characterName;
 
     private float currentHealth;
-    private float shield;
+    private int shield = 100;
     //private Dice[] dices;
 
     [Header("UI-Config")]
@@ -26,23 +28,30 @@ public abstract class Character : MonoBehaviour
     public Image shieldBar;
 
     #region virtual-methods
-    public virtual void Damage(float damage)
+    public virtual void Damage(int damage)
     {
         if (shield > 0)
         {
             if (shield >= damage)
+            {
                 shield -= damage;
+                Debug.Log("shield " + shield);
+            }
             else
             {
-                float leftoverDamage = damage - shield;
+                int leftoverDamage = damage - shield;
                 currentHealth -= leftoverDamage;
+                Debug.Log("shield + health " + shield + " | " + currentHealth);
                 shield = 0;
             }
         }
         else
+        {
             currentHealth -= damage;
+            Debug.Log("health " + currentHealth);
+        }
 
-        AnimateCharacter(CharacterAnimType.damage);
+        AnimateCharacter(CharacterAnimType.attack);
         UpdateCharacterUI();
     }
     public virtual void Heal(float healAmount)
@@ -55,14 +64,14 @@ public abstract class Character : MonoBehaviour
         AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
-    public virtual void AddShield(float shieldAmount)
+    public virtual void AddShield(int shieldAmount)
     {
         shield += shieldAmount;
 
         if (shieldAmount > maxHealth)
             shield = maxHealth;
 
-        AnimateCharacter(CharacterAnimType.shield);
+        AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
     #endregion
@@ -77,20 +86,23 @@ public abstract class Character : MonoBehaviour
     {
         switch (animType)
         {
-            case CharacterAnimType.damage:
+            case CharacterAnimType.attack:
                 DamageAnimation();
                 break;
             case CharacterAnimType.heal:
                 HealAnimation();
                 break;
-            case CharacterAnimType.shield:
+            case CharacterAnimType.defend:
                 ShieldAnimation();
                 break;
         }
     }
     private void UpdateCharacterUI()
     {
-        healthBar.DOFillAmount(currentHealth / maxHealth, 0.2f);
-        shieldBar.DOFillAmount(shield / maxHealth, 0.2f);
+        if (currentHealth > 0)
+            healthBar.DOFillAmount(currentHealth / maxHealth, 0.2f);
+        
+        if (shield > 0)
+            shieldBar.DOFillAmount(shield / maxHealth, 0.2f);
     }
 }

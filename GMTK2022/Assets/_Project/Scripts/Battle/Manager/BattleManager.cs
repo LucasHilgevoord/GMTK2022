@@ -32,7 +32,7 @@ public class BattleManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            OnAttack(_player, _enemyManager.FocussedEnemy);
+            OnAttack(_player, _enemyManager.FocussedEnemy, 0);
         }
     }
 
@@ -81,7 +81,7 @@ public class BattleManager : MonoBehaviour
         {
             default:
             case DiceAbility.Attack:
-                OnAttack(caster, target);
+                OnAttack(caster, target, result.diceValue);
                 break;
             case DiceAbility.Defend:
                 OnDefend();
@@ -91,7 +91,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void OnAttack(Character caster, Character target)
+    private void OnAttack(Character caster, Character target, int damage)
     {
         // Apply attack
         RectTransform c = caster._characterSprite;
@@ -109,7 +109,7 @@ public class BattleManager : MonoBehaviour
         sequence.Join(c.DORotate(Vector3.zero, 0.2f));
 
         // Target gets hit
-        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f));
+        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(()=> { target.Damage(damage); }));
         sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
         
         // Move entities back to the original pos
