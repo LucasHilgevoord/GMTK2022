@@ -17,9 +17,10 @@ public abstract class Character : MonoBehaviour
     public RectTransform _characterSprite;
 
     protected int maxHealth = 100;
+    protected int maxShield => maxHealth;
     protected string characterName;
 
-    private float currentHealth;
+    private int currentHealth;
     private int shield;
     //private Dice[] dices;
 
@@ -57,26 +58,22 @@ public abstract class Character : MonoBehaviour
             Debug.Log("health " + currentHealth);
         }
 
+        // Clamp the values
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        shield = Mathf.Clamp(shield, 0, maxShield);
+
         AnimateCharacter(CharacterAnimType.attack);
         UpdateCharacterUI();
     }
-    public virtual void Heal(float healAmount)
+    public virtual void Heal(int healAmount)
     {
-        currentHealth += healAmount;
-
-        if (currentHealth > maxHealth)
-            currentHealth = maxHealth;
-
+        shield = Mathf.Clamp(currentHealth + healAmount, 0, healAmount) ;
         AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
     public virtual void AddShield(int shieldAmount)
     {
-        shield += shieldAmount;
-
-        if (shieldAmount > maxHealth)
-            shield = maxHealth;
-
+        shield = Mathf.Clamp(shield + shieldAmount, 0, maxShield);
         AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
@@ -105,10 +102,10 @@ public abstract class Character : MonoBehaviour
     }
     private void UpdateCharacterUI()
     {
-        if (currentHealth > 0)
-            healthBar.DOFillAmount(currentHealth / maxHealth, 0.2f);
+        if (currentHealth >= 0)
+            healthBar.DOFillAmount((float)currentHealth / maxHealth, 0.2f);
         
-        if (shield > 0)
-            shieldBar.DOFillAmount(shield / maxHealth, 0.2f);
+        if (shield >= 0)
+            shieldBar.DOFillAmount((float)shield / maxShield, 0.2f);
     }
 }
