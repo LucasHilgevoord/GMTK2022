@@ -20,12 +20,18 @@ public abstract class Character : MonoBehaviour
     protected string characterName;
 
     private float currentHealth;
-    private int shield = 100;
+    private int shield;
     //private Dice[] dices;
 
     [Header("UI-Config")]
     public Image healthBar;
     public Image shieldBar;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        shield = maxHealth;
+    }
 
     #region virtual-methods
     public virtual void Damage(int damage)
