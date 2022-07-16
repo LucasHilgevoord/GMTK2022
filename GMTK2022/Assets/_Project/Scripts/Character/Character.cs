@@ -6,12 +6,14 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public enum CharacterAnimType
+public enum CharacterInteractionType
 { 
     attack,
     healSelf,
     addShield,
-    takeDamage,
+    takeHealthDamage,
+    takeShieldDamage,
+    takeMixedDamage,
     die
 }
 
@@ -34,6 +36,7 @@ public class Character : MonoBehaviour
     public Image shieldBar;
     public CanvasGroup dialogueBox;
     public TextMeshProUGUI dialogueText;
+    public BattleEffectHandler battleEffectHandler;
 
     [Header("Animations")]
     public Image shadow;
@@ -67,19 +70,26 @@ public class Character : MonoBehaviour
             if (currentShield >= damage)
             {
                 currentShield -= damage;
+                battleEffectHandler.ShowBattleEffect(CharacterInteractionType.takeShieldDamage, damage);
+
                 Debug.Log("shield " + currentShield);
             }
             else
             {
                 int leftoverDamage = damage - currentShield;
                 currentHealth -= leftoverDamage;
-                Debug.Log("shield + health " + currentShield + " | " + currentHealth);
                 currentShield = 0;
+                battleEffectHandler.ShowBattleEffect(CharacterInteractionType.takeMixedDamage, damage, leftoverDamage);
+
+                Debug.Log("shield + health " + currentShield + " | " + currentHealth);
+
             }
         }
         else
         {
             currentHealth -= damage;
+            battleEffectHandler.ShowBattleEffect(CharacterInteractionType.takeHealthDamage, damage);
+
             Debug.Log("health " + currentHealth);
         }
 
@@ -95,6 +105,8 @@ public class Character : MonoBehaviour
     {
         SayDialogue("Ahhh, feels nice.");
 
+        battleEffectHandler.ShowBattleEffect(CharacterInteractionType.healSelf, healAmount);
+
         currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, maxHealth) ;
         //AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
@@ -103,13 +115,14 @@ public class Character : MonoBehaviour
     {
         SayDialogue("HAHA! SHIELD POWERED UP!");
 
+        battleEffectHandler.ShowBattleEffect(CharacterInteractionType.addShield, shieldAmount);
+
         currentShield = Mathf.Clamp(currentShield + shieldAmount, 0, maxShield);
         //AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
     public void Die()
     {
-        //AnimateCharacter(CharacterAnimType.die);
         SayDialogue("I don't feel so good..");
     }
 
