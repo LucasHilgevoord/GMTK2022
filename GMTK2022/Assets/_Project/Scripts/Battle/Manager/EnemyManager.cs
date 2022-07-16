@@ -7,8 +7,10 @@ public class EnemyManager : MonoBehaviour
     public List<Character> Enemies => _enemies;
     private List<Character> _enemies;
 
-    public Character FocussedEnemy => _enemies[_focussedEnemyIndex];
+    public Character FocussedEnemy => testEnemy;//_enemies[_focussedEnemyIndex];
     private int _focussedEnemyIndex;
+
+    public Character testEnemy;
 
     private void Initialize(CharacterData[] characterData)
     {

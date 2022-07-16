@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DiceResult : MonoBehaviour
+public class DiceResult
 {
     public DiceAbility diceAbility;
     public int diceValue;

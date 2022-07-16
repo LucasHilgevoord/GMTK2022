@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class DiceBox : MonoBehaviour
 {
+    public static event Action<DiceResult> DiceRolled;
+
     public Camera cameraToPlaceWalls;
 
     [Header("Box edges")]
@@ -18,12 +21,12 @@ public class DiceBox : MonoBehaviour
     private float boxHeight;
     private float boxWidth;
 
-
     [Header("Dice Throws")]
     public Dice mainDice;
     public float forceStrength;
     public float rotateStrength;
     private bool watchDice;
+    private float hideDiceCooldown = 1.0f;
 
     private void Start()
     {
@@ -47,9 +50,28 @@ public class DiceBox : MonoBehaviour
                 watchDice = false;
 
                 mainDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                mainDice.transform.DOMove(new Vector3(0, 1, 0), 1f).SetEase(Ease.OutBack);
+                mainDice.transform.DOMove(new Vector3(0, 1, 0), 1f)
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() => {
+                        StartCoroutine(HideDice());
+                        Invoke(nameof(RollCompleted), 0.5f);
+                    });
             }
         }
+    }
+
+    internal void RollCompleted()
+    {
+        int diceValue = UnityEngine.Random.Range(1, 80); // TEMP
+        DiceAbility rndAbility = DiceAbility.Attack; ///(DiceAbility)Enum.GetNames(typeof(DiceAbility)).Length - 1; // TEMP
+        DiceResult result = new DiceResult(rndAbility, diceValue); // TEMP
+        DiceRolled?.Invoke(result);
+    }
+
+    private IEnumerator HideDice()
+    {
+        yield return new WaitForSeconds(hideDiceCooldown);
+        mainDice.HideDice();
     }
 
     private void FixedUpdate()

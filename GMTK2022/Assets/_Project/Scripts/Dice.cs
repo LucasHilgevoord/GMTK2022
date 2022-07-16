@@ -10,6 +10,7 @@ public class Dice : MonoBehaviour
 
     public GameObject[] dices;
     internal Rigidbody myRigidbody;
+    private int _currentDiceIndex;
 
     private void Awake()
     {
@@ -22,12 +23,12 @@ public class Dice : MonoBehaviour
     /// <param name="type"></param>
     public void SetDice(DiceType type)
     {
-        for (int i = 0; i < dices.Length; i++)
-        {
-            dices[i].SetActive(false);
-        }
+        // Disable previous dice
+        HideDice();
 
-        dices[(int)type].SetActive(true);
+        // Show new dice
+        _currentDiceIndex = (int)type;
+        dices[_currentDiceIndex].SetActive(true);
     }
 
     public void SetRandomDice()
@@ -35,5 +36,10 @@ public class Dice : MonoBehaviour
         List<DiceType> diceTypes = Enum.GetValues(typeof(DiceType)).Cast<DiceType>().ToList();
 
         SetDice(diceTypes[UnityEngine.Random.Range(0, diceTypes.Count)]);
+    }
+
+    public void HideDice()
+    {
+        dices[_currentDiceIndex].SetActive(false);
     }
 }
