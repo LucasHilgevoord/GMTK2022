@@ -33,16 +33,21 @@ public class DiceBox : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ThrowRandomDice();
+        }
+
         if (watchDice)
         {
-            if (mainDice.myRigidbody.velocity.x == 0 
+            if (mainDice.myRigidbody.velocity.x == 0
                 && mainDice.myRigidbody.velocity.y == 0
                 && mainDice.myRigidbody.velocity.z == 0)
             {
                 watchDice = false;
 
                 mainDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                mainDice.transform.DOMove(new Vector3(0, wallsize / 2f, 0), 1f).SetEase(Ease.OutBack);
+                mainDice.transform.DOMove(new Vector3(0, 1, 0), 1f).SetEase(Ease.OutBack);
             }
         }
     }
@@ -78,11 +83,11 @@ public class DiceBox : MonoBehaviour
         rightWall.localScale = new Vector3(wallsize, wallsize, boxHeight);
         leftWall.localScale = new Vector3(wallsize, wallsize, boxHeight);
 
-        topWall.transform.localPosition = new Vector3(0, wallsize / 2f, (boxHeight / 2) + wallsize / 2f);
-        bottomWall.transform.localPosition = new Vector3(0, wallsize / 2f, (-boxHeight / 2) - wallsize / 2f);
+        topWall.transform.localPosition = new Vector3(0, wallsize / 2f, (boxHeight / 2) + wallsize / 2f - 0.5f);
+        bottomWall.transform.localPosition = new Vector3(0, wallsize / 2f, (-boxHeight / 2) - wallsize / 2f + 0.5f);
 
-        leftWall.transform.localPosition = new Vector3((-boxWidth / 2) - wallsize / 2f, wallsize / 2f, 0);
-        rightWall.transform.localPosition = new Vector3((boxWidth / 2) + wallsize / 2f, wallsize / 2f, 0);
+        leftWall.transform.localPosition = new Vector3((-boxWidth / 2) - wallsize / 2f + .5f, wallsize / 2f, 0);
+        rightWall.transform.localPosition = new Vector3((boxWidth / 2) + wallsize / 2f - .5f, wallsize / 2f, 0);
     }
 
 
@@ -100,7 +105,7 @@ public class DiceBox : MonoBehaviour
         mainDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
         mainDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
 
-        mainDice.myRigidbody.angularVelocity = new Vector3(UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength));
+        //mainDice.myRigidbody.angularVelocity = new Vector3(UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength));
         mainDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
 
         watchDice = true;
