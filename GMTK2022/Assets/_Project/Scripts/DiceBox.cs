@@ -62,7 +62,7 @@ public class DiceBox : MonoBehaviour
 
     internal void RollCompleted()
     {
-        int diceValue = UnityEngine.Random.Range(1, 80); // TEMP
+        int diceValue = 200;//UnityEngine.Random.Range(1, 80); // TEMP
         DiceAbility rndAbility = DiceAbility.Attack; ///(DiceAbility)Enum.GetNames(typeof(DiceAbility)).Length - 1; // TEMP
         DiceResult result = new DiceResult(rndAbility, diceValue); // TEMP
         DiceRolled?.Invoke(result);

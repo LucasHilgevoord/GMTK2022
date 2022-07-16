@@ -3,8 +3,8 @@ using UnityEngine;
 /// <summary>
 /// Scriptable object that holds the base enemy data to only initially load enemies from
 /// </summary>
-[CreateAssetMenu(fileName = "EnemyBaseData", menuName = "ScriptableObjects/BaseData")]
-public class EnemyBaseData : ScriptableObject
+[CreateAssetMenu(fileName = "CharacterBaseData", menuName = "ScriptableObjects/BaseData")]
+public class CharacterData : ScriptableObject
 {
     [SerializeField]
     private int enemyID;

@@ -15,17 +15,19 @@ public enum CharacterAnimType
     die
 }
 
-public abstract class Character : MonoBehaviour
+public class Character : MonoBehaviour
 {
     public RectTransform _characterSprite;
+    public CanvasGroup statusGroup;
 
-    protected int maxHealth = 100;
+    protected int maxHealth;
     protected int maxShield => maxHealth;
     protected string characterName;
 
     private int currentHealth;
     private int shield;
     //private Dice[] dices;
+    public bool IsAlive { get { return currentHealth > 0; } }
 
     [Header("UI-Config")]
     public Image healthBar;
@@ -34,19 +36,28 @@ public abstract class Character : MonoBehaviour
     public TextMeshProUGUI dialogueText;
 
     [Header("Animations")]
+    public Image shadow;
     public GameObject _spineObj;
     protected SpineHandler spineHandler;
-    protected virtual string spineSuffix { get; set; }
+    public string spineSuffix;
 
     private void Start()
     {
-        spineHandler = new SpineHandler(_spineObj, spineSuffix);
+        Initialize(null);
+    }
+
+    private void Initialize(CharacterData baseData)
+    {
+        //characterName = baseData.GetEnemyName();
+        maxHealth = 100;//baseData.GetMaxHealth();
         currentHealth = maxHealth;
         shield = maxHealth;
+
+        spineHandler = new SpineHandler(_spineObj, spineSuffix);
     }
 
     #region virtual-methods
-    public virtual void Damage(int damage)
+    public void Damage(int damage)
     {
         SayDialogue("OUCH! You think you're sh*t ?!");
 
@@ -79,7 +90,7 @@ public abstract class Character : MonoBehaviour
         if (currentHealth <= 0)
             Die();
     }
-    public virtual void Heal(int healAmount)
+    public void Heal(int healAmount)
     {
         SayDialogue("Ahhh, feels nice.");
 
@@ -87,7 +98,7 @@ public abstract class Character : MonoBehaviour
         //AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
-    public virtual void AddShield(int shieldAmount)
+    public void AddShield(int shieldAmount)
     {
         SayDialogue("HAHA! SHIELD POWERED UP!");
 
@@ -95,13 +106,13 @@ public abstract class Character : MonoBehaviour
         //AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
-    public virtual void Die()
+    public void Die()
     {
         //AnimateCharacter(CharacterAnimType.die);
         SayDialogue("Damn I'm dead.");
     }
 
-    public virtual void SayDialogue(string dialogue)
+    public void SayDialogue(string dialogue)
     {
         dialogueText.SetText(dialogue);
 
@@ -146,7 +157,6 @@ public abstract class Character : MonoBehaviour
 
     internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)
     {
-        Debug.Log("play " + animationName  + " animation " + spineSuffix);
         spineHandler.PlayAnimation(animationName, loop, useSuffix);
     }
 

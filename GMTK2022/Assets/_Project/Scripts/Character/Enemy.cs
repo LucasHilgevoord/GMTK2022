@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    protected override string spineSuffix { get { return "enemy"; } }
+    //protected override string spineSuffix { get { return "enemy"; } }
 
-    public void LoadFromBaseData(EnemyBaseData baseData)
-    {
-        this.characterName = baseData.GetEnemyName();
-        this.maxHealth = baseData.GetMaxHealth();
-    }
+    //public void LoadFromBaseData(CharacterBaseData baseData)
+    //{
+    //    this.characterName = baseData.GetEnemyName();
+    //    this.maxHealth = baseData.GetMaxHealth();
+    //}
 
     //public override void OnAttack()
     //{

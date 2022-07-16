@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : Character
 {
-    protected override string spineSuffix { get { return "player"; } }
+    //protected override string spineSuffix { get { return "player"; } }
 
     //public override void OnAttack()
     //{

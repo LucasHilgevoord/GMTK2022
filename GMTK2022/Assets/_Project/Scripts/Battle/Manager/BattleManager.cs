@@ -132,8 +132,15 @@ public class BattleManager : MonoBehaviour
         sequence.OnComplete(() => 
         {
             caster.PlayAnimation("idle", true);
-            target.PlayAnimation("idle", true);
-            OnAbilityFinished();
+            if (target.IsAlive)
+            {
+                target.PlayAnimation("idle", true);
+                NextPhase();
+            }
+            else
+            {
+                OnTargetKilled(target);
+            }
         });
         sequence.Play();
     }
@@ -148,9 +155,24 @@ public class BattleManager : MonoBehaviour
         
     }
 
-    private void OnAbilityFinished()
+    private void OnTargetKilled(Character target)
     {
-        NextPhase();
+        target.PlayAnimation("die", false, true);
+        Sequence dieSequence = DOTween.Sequence();
+
+        dieSequence.PrependInterval(1f);
+        dieSequence.Append(target.statusGroup.DOFade(0, 0.5f));
+        dieSequence.Join(target.shadow.DOFade(0, 0.5f));
+        dieSequence.Play();
+
+        if (target == _player)
+        {
+            Debug.Log("You lost");
+        }
+        else
+        {
+            Debug.Log("You win!");
+        }
     }
 
     private void OnEnemyTurn()
