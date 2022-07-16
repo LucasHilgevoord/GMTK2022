@@ -74,10 +74,15 @@ public class BattleManager : MonoBehaviour
 
     private void CheckAbility(int playerValue, int attackerValue)
     {
+        float nextPhaseDelay = 2;
+
         if (_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Attack)
         {
-            AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, false);
-            AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue, false);
+            nextPhaseDelay = 3;
+            AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, () =>
+            {
+                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
+            });
         } 
         else if ((_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Parry) ||
             (_playerAbility == CardAbility.Parry && _enemyAbility == CardAbility.Attack))
@@ -87,11 +92,11 @@ public class BattleManager : MonoBehaviour
         {
             if (_playerAbility == CardAbility.Attack)
             {
-                AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, true);
+                AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
             }
             else if (_enemyAbility == CardAbility.Attack)
             {
-                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue, true);
+                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             }
             
             if (_playerAbility == CardAbility.Heal)
@@ -106,13 +111,13 @@ public class BattleManager : MonoBehaviour
         // TESTING
         IEnumerator waitForNextPhase()
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(nextPhaseDelay);
             NextPhase();
         }
         StartCoroutine(waitForNextPhase());
     }
 
-    private void AttackTarget(Character caster, Character target, int damage, bool useTargetKnockback = true)
+    private void AttackTarget(Character caster, Character target, int damage, Action onComplete = null)
     {
         // Apply attack
         RectTransform c = caster._characterSprite;
@@ -129,24 +134,16 @@ public class BattleManager : MonoBehaviour
         sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + _chargeFront * dir, 0.2f).OnStart(() =>
         {
             caster.PlayAnimation("attack_1");
-        }).OnComplete(() =>
-        {
-            // Damage the character here if both enemies attack eachother
-            if (!useTargetKnockback)
-                target.Damage(damage);
         }));
         sequence.Join(c.DORotate(Vector3.zero, 0.2f));
 
         // Target gets hit
-        if (useTargetKnockback)
+        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(() =>
         {
-            sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(() =>
-            {
-                target.Damage(damage);
-                target.PlayAnimation("damage_1");
-            }));
-            sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
-        }
+            target.Damage(damage);
+            target.PlayAnimation("damage_1");
+        }));
+        sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
 
         // Move entities back to the original pos
         sequence.Append(c.DOAnchorPosX(0, 0.2f).OnStart(() =>
@@ -154,21 +151,18 @@ public class BattleManager : MonoBehaviour
             caster.PlayAnimation("attack_2");
         }));
 
-        if (useTargetKnockback)
+        sequence.Join(t.DOAnchorPosX(0, 0.2f).OnStart(() =>
         {
-            sequence.Join(t.DOAnchorPosX(0, 0.2f).OnStart(() =>
-            {
-                caster.PlayAnimation("damage_2");
-            }));
-            sequence.Join(t.DORotate(Vector3.zero, 0.2f));
-        }
+            caster.PlayAnimation("damage_2");
+        }));
+        sequence.Join(t.DORotate(Vector3.zero, 0.2f));
         sequence.OnComplete(() => 
         {
             caster.PlayAnimation("idle", true);
             if (target.IsAlive)
             {
                 target.PlayAnimation("idle", true);
-                //onComplete?.Invoke();
+                onComplete?.Invoke();
             }
             else
             {
