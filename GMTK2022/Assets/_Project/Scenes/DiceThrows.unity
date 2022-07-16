@@ -756,6 +756,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 638653558556680547, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139844736924483268, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997117511373763337, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2874673966064720848, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4958274154351637872, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5356502170869485186, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
       propertyPath: cameraToPlaceWalls
       value: 
@@ -808,25 +828,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiceBox
       objectReference: {fileID: 0}
-    - target: {fileID: 5356502170912499709, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+    - target: {fileID: 7326477615481960758, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5356502171133116121, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356502171272198633, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356502171401660740, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356502171983099558, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4984192551181003258, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
