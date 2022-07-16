@@ -236,6 +236,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &477633915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2219355069293998486, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+  m_PrefabInstance: {fileID: 1228395831}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc4e1b2a0706d74abf531d628c596d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &493232661
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,18 +941,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4923483281527616573, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: cfcea0e11aa80bb4b8d05790b905fc31, type: 2}
-    - target: {fileID: 4923483281527616573, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
-      propertyPath: meshGenerator.settings.tintBlack
+    - target: {fileID: 7378339596291421975, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
+      propertyPath: dices.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8395341521462401078, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
-      propertyPath: characterCanvasGroup
+    - target: {fileID: 7378339596291421975, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
+      propertyPath: dices.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 477633915}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
 --- !u!224 &985105857 stripped

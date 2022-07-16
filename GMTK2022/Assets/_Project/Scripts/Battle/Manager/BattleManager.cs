@@ -84,9 +84,10 @@ public class BattleManager : MonoBehaviour
                 OnAttack(caster, target, result.diceValue);
                 break;
             case DiceAbility.Defend:
-                OnDefend();
+                OnDefend(caster, result.diceValue);
                 break;
             case DiceAbility.Heal:
+                OnHeal(caster, result.diceValue);
                 break;
         }
     }
@@ -145,14 +146,16 @@ public class BattleManager : MonoBehaviour
         sequence.Play();
     }
 
-    private void OnDefend()
+    private void OnDefend(Character caster, int shield)
     {
-        
+        caster.AddShield(shield);
+        NextPhase();
     }
 
-    private void OnHeal()
+    private void OnHeal(Character caster, int health)
     {
-        
+        caster.Heal(health);
+        NextPhase();
     }
 
     private void OnTargetKilled(Character target)
@@ -182,7 +185,7 @@ public class BattleManager : MonoBehaviour
         IEnumerator wait()
         {
             yield return new WaitForSeconds(1);
-            _diceBox.RollCompleted();
+            _diceBox.RollAIDice(_enemyManager.FocussedEnemy.dices);
         };
 
         StartCoroutine(wait());

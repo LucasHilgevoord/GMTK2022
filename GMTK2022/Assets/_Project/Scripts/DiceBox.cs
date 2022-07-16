@@ -57,7 +57,6 @@ public class DiceBox : MonoBehaviour
                 currentDice.transform.DOMove(new Vector3(0, 1, 0), 1f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() => {
-                        DecideResult();
                         StartCoroutine(HideDice());
                         Invoke(nameof(RollCompleted), 0.5f);
                     });
@@ -67,9 +66,20 @@ public class DiceBox : MonoBehaviour
 
     internal void RollCompleted()
     {
-        int diceValue = 200;//UnityEngine.Random.Range(1, 80); // TEMP
-        DiceAbility rndAbility = DiceAbility.Attack; ///(DiceAbility)Enum.GetNames(typeof(DiceAbility)).Length - 1; // TEMP
-        DiceResult result = new DiceResult(rndAbility, diceValue); // TEMP
+        DiceAbility ability = DecideResult();
+        int diceValue = UnityEngine.Random.Range(1, 80); // TEMP
+        DiceResult result = new DiceResult(ability, diceValue);
+        DiceRolled?.Invoke(result);
+    }
+
+    internal void RollAIDice(Dice[] dices)
+    {
+        int rndDice = UnityEngine.Random.Range(0, dices.Length);
+        Dice dice = dices[rndDice];
+
+        DiceAbility ability = dice.sides[UnityEngine.Random.Range(0, dice.sides.Length)].type;
+        int diceValue = UnityEngine.Random.Range(1, 80); // TEMP
+        DiceResult result = new DiceResult(ability, diceValue);
         DiceRolled?.Invoke(result);
     }
 
@@ -78,16 +88,16 @@ public class DiceBox : MonoBehaviour
         yield return new WaitForSeconds(hideDiceCooldown);
         diceManager.HideDice();
     }
-    private void DecideResult()
+    private DiceAbility DecideResult()
     {
         Ray r = cameraToPlaceWalls.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         RaycastHit info;
         Physics.Raycast(r, out info, 100f, diceSideLayer);
 
         if (info.collider != null)
-        {
-            Debug.Log(info.collider.GetComponent<DiceSide>().type);
-        }
+            return info.collider.GetComponent<DiceSide>().type;
+
+        return DiceAbility.Attack;
     }
 
     private void FixedUpdate()

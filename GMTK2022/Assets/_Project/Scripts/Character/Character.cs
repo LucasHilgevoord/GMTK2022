@@ -25,8 +25,8 @@ public class Character : MonoBehaviour
     protected string characterName;
 
     private int currentHealth;
-    private int shield;
-    //private Dice[] dices;
+    private int currentShield;
+    public Dice[] dices; // ASSIGN THROUGH CHARACTER DATA/INVENTORY
     public bool IsAlive { get { return currentHealth > 0; } }
 
     [Header("UI-Config")]
@@ -51,9 +51,10 @@ public class Character : MonoBehaviour
         //characterName = baseData.GetEnemyName();
         maxHealth = 100;//baseData.GetMaxHealth();
         currentHealth = maxHealth;
-        shield = maxHealth;
+        currentShield = 0;
 
         spineHandler = new SpineHandler(_spineObj, spineSuffix);
+        UpdateCharacterUI(true);
     }
 
     #region virtual-methods
@@ -61,19 +62,19 @@ public class Character : MonoBehaviour
     {
         SayDialogue("OUCH! You think you're sh*t ?!");
 
-        if (shield > 0)
+        if (currentShield > 0)
         {
-            if (shield >= damage)
+            if (currentShield >= damage)
             {
-                shield -= damage;
-                Debug.Log("shield " + shield);
+                currentShield -= damage;
+                Debug.Log("shield " + currentShield);
             }
             else
             {
-                int leftoverDamage = damage - shield;
+                int leftoverDamage = damage - currentShield;
                 currentHealth -= leftoverDamage;
-                Debug.Log("shield + health " + shield + " | " + currentHealth);
-                shield = 0;
+                Debug.Log("shield + health " + currentShield + " | " + currentHealth);
+                currentShield = 0;
             }
         }
         else
@@ -84,7 +85,7 @@ public class Character : MonoBehaviour
 
         // Clamp the values
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        shield = Mathf.Clamp(shield, 0, maxShield);
+        currentShield = Mathf.Clamp(currentShield, 0, maxShield);
         UpdateCharacterUI();
 
         if (currentHealth <= 0)
@@ -94,7 +95,7 @@ public class Character : MonoBehaviour
     {
         SayDialogue("Ahhh, feels nice.");
 
-        shield = Mathf.Clamp(currentHealth + healAmount, 0, healAmount) ;
+        currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, maxHealth) ;
         //AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
@@ -102,7 +103,7 @@ public class Character : MonoBehaviour
     {
         SayDialogue("HAHA! SHIELD POWERED UP!");
 
-        shield = Mathf.Clamp(shield + shieldAmount, 0, maxShield);
+        currentShield = Mathf.Clamp(currentShield + shieldAmount, 0, maxShield);
         //AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
@@ -123,49 +124,24 @@ public class Character : MonoBehaviour
     }
     #endregion
 
-    //#region abstract-methods
-    //public abstract void OnAttack();
-    //public abstract void OnHeal();
-    //public abstract void OnShieldIncrease();
-    //public abstract void OnDie();
-    //public abstract void OnDamageTaken();
-    //public abstract void OnIdle();
-    //#endregion
-
-    //private void AnimateCharacter(CharacterAnimType animType)
-    //{
-    //    Debug.Log("animate character " + spineSuffix);
-    //    switch (animType)
-    //    {
-    //        case CharacterAnimType.attack:
-    //            OnAttack();
-    //            break;
-    //        case CharacterAnimType.healSelf:
-    //            OnHeal();
-    //            break;
-    //        case CharacterAnimType.addShield:
-    //            OnShieldIncrease();
-    //            break;
-    //        case CharacterAnimType.die:
-    //            OnDie();
-    //            break;
-    //        case CharacterAnimType.takeDamage:
-    //            OnDie();
-    //            break;
-    //    }
-    //}
-
     internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)
     {
         spineHandler.PlayAnimation(animationName, loop, useSuffix);
     }
 
-    private void UpdateCharacterUI()
+    private void UpdateCharacterUI(bool snap = false)
     {
-        if (currentHealth >= 0)
-            healthBar.DOFillAmount((float)currentHealth / maxHealth, 0.2f);
-        
-        if (shield >= 0)
-            shieldBar.DOFillAmount((float)shield / maxShield, 0.2f);
+        if (snap)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+            shieldBar.fillAmount = currentShield / maxShield;
+        } else
+        {
+            if (currentHealth >= 0)
+                healthBar.DOFillAmount((float)currentHealth / maxHealth, 0.2f);
+
+            if (currentShield >= 0)
+                shieldBar.DOFillAmount((float)currentShield / maxShield, 0.2f);
+        }
     }
 }
