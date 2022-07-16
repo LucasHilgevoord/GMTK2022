@@ -19,6 +19,7 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.Play(Sounds.battleMusic, true);
         Initialize();
     }
 
@@ -144,17 +145,25 @@ public class BattleManager : MonoBehaviour
             }
         });
         sequence.Play();
+
+        // sfx
+        if (caster == _player)
+            SoundManager.Instance.Play(Sounds.playerAttack);
+        else
+            SoundManager.Instance.Play(Sounds.enemyAttack);
     }
 
     private void OnDefend(Character caster, int shield)
     {
         caster.AddShield(shield);
+        SoundManager.Instance.Play(Sounds.addShield);  // sfx
         NextPhase();
     }
 
     private void OnHeal(Character caster, int health)
     {
         caster.Heal(health);
+        SoundManager.Instance.Play(Sounds.heal);  // sfx
         NextPhase();
     }
 

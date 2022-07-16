@@ -74,6 +74,8 @@ public class DiceBox : MonoBehaviour
 
     internal void RollAIDice(Dice[] dices)
     {
+        SoundManager.Instance.Play(Sounds.diceRoll);
+
         int rndDice = UnityEngine.Random.Range(0, dices.Length);
         Dice dice = dices[rndDice];
 
@@ -144,6 +146,8 @@ public class DiceBox : MonoBehaviour
     /// </summary>
     public void ThrowRandomDice()
     {
+        SoundManager.Instance.Play(Sounds.diceRoll);
+
         currentDice = diceManager.SetDice(DiceType.D20, 10, 5, 5);
 
         currentDice.myRigidbody.drag = 1f;

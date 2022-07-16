@@ -13,4 +13,11 @@ MonoBehaviour:
   m_Name: AudioDataCollection
   m_EditorClassIdentifier: 
   audioDatas:
+  - {fileID: 11400000, guid: 92b9c32ac04298a4c8a9f3a8ffa8fb7d, type: 2}
+  - {fileID: 11400000, guid: 0de12e12189bfcd4392f9592c90c1a4e, type: 2}
+  - {fileID: 11400000, guid: a296c85af4dbf3d4cadd116f82a7d91b, type: 2}
+  - {fileID: 11400000, guid: b12baf056295c9e459799c107f8de6ff, type: 2}
+  - {fileID: 11400000, guid: a6af43dd08cacba44bbf8394f58a6d7d, type: 2}
   - {fileID: 11400000, guid: 7ad19b56ec273a944933c6f971cb0044, type: 2}
+  - {fileID: 11400000, guid: 3e95d28e243e8c54c86d1888b3a0127a, type: 2}
+  - {fileID: 11400000, guid: c7b1b40bac8fed643ab35e3050d63e80, type: 2}
