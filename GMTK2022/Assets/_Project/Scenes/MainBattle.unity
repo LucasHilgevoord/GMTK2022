@@ -930,6 +930,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4923483281527616573, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: cfcea0e11aa80bb4b8d05790b905fc31, type: 2}
+    - target: {fileID: 4923483281527616573, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
+      propertyPath: meshGenerator.settings.tintBlack
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8395341521462401078, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: characterCanvasGroup
       value: 
@@ -1532,7 +1540,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: -1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
