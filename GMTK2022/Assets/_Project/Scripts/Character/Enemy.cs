@@ -4,25 +4,35 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    protected override string spineSuffix { get { return "enemy"; } }
+
     public void LoadFromBaseData(EnemyBaseData baseData)
     {
         this.characterName = baseData.GetEnemyName();
         this.maxHealth = baseData.GetMaxHealth();
     }
 
-    public override void DamageAnimation()
-    {
-    }
+    //public override void OnAttack()
+    //{
+    //}
 
-    public override void HealAnimation()
-    {
-    }
+    //public override void OnHeal()
+    //{
+    //}
 
-    public override void ShieldAnimation()
-    {
-    }
+    //public override void OnShieldIncrease()
+    //{
+    //}
 
-    public override void DieAnimation()
-    {
-    }
+    //public override void OnDie()
+    //{
+    //}
+
+    //public override void OnDamageTaken()
+    //{
+    //}
+
+    //public override void OnIdle()
+    //{
+    //}
 }

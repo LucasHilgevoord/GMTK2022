@@ -9,8 +9,9 @@ using TMPro;
 public enum CharacterAnimType
 { 
     attack,
-    heal,
-    defend,
+    healSelf,
+    addShield,
+    takeDamage,
     die
 }
 
@@ -32,8 +33,14 @@ public abstract class Character : MonoBehaviour
     public CanvasGroup dialogueBox;
     public TextMeshProUGUI dialogueText;
 
+    [Header("Animations")]
+    public GameObject _spineObj;
+    protected SpineHandler spineHandler;
+    protected virtual string spineSuffix { get; set; }
+
     private void Start()
     {
+        spineHandler = new SpineHandler(_spineObj, spineSuffix);
         currentHealth = maxHealth;
         shield = maxHealth;
     }
@@ -67,8 +74,6 @@ public abstract class Character : MonoBehaviour
         // Clamp the values
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         shield = Mathf.Clamp(shield, 0, maxShield);
-
-        AnimateCharacter(CharacterAnimType.attack);
         UpdateCharacterUI();
 
         if (currentHealth <= 0)
@@ -79,7 +84,7 @@ public abstract class Character : MonoBehaviour
         SayDialogue("Ahhh, feels nice.");
 
         shield = Mathf.Clamp(currentHealth + healAmount, 0, healAmount) ;
-        AnimateCharacter(CharacterAnimType.heal);
+        //AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
     public virtual void AddShield(int shieldAmount)
@@ -87,12 +92,12 @@ public abstract class Character : MonoBehaviour
         SayDialogue("HAHA! SHIELD POWERED UP!");
 
         shield = Mathf.Clamp(shield + shieldAmount, 0, maxShield);
-        AnimateCharacter(CharacterAnimType.defend);
+        //AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
     public virtual void Die()
     {
-        AnimateCharacter(CharacterAnimType.die);
+        //AnimateCharacter(CharacterAnimType.die);
         SayDialogue("Damn I'm dead.");
     }
 
@@ -107,31 +112,43 @@ public abstract class Character : MonoBehaviour
     }
     #endregion
 
-    #region abstract-methods
-    public abstract void DamageAnimation();
-    public abstract void HealAnimation();
-    public abstract void ShieldAnimation();
-    public abstract void DieAnimation();
-    #endregion
+    //#region abstract-methods
+    //public abstract void OnAttack();
+    //public abstract void OnHeal();
+    //public abstract void OnShieldIncrease();
+    //public abstract void OnDie();
+    //public abstract void OnDamageTaken();
+    //public abstract void OnIdle();
+    //#endregion
 
-    private void AnimateCharacter(CharacterAnimType animType)
+    //private void AnimateCharacter(CharacterAnimType animType)
+    //{
+    //    Debug.Log("animate character " + spineSuffix);
+    //    switch (animType)
+    //    {
+    //        case CharacterAnimType.attack:
+    //            OnAttack();
+    //            break;
+    //        case CharacterAnimType.healSelf:
+    //            OnHeal();
+    //            break;
+    //        case CharacterAnimType.addShield:
+    //            OnShieldIncrease();
+    //            break;
+    //        case CharacterAnimType.die:
+    //            OnDie();
+    //            break;
+    //        case CharacterAnimType.takeDamage:
+    //            OnDie();
+    //            break;
+    //    }
+    //}
+
+    internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)
     {
-        switch (animType)
-        {
-            case CharacterAnimType.attack:
-                DamageAnimation();
-                break;
-            case CharacterAnimType.heal:
-                HealAnimation();
-                break;
-            case CharacterAnimType.defend:
-                ShieldAnimation();
-                break;
-            case CharacterAnimType.die:
-                DieAnimation();
-                break;
-        }
+        spineHandler.PlayAnimation(animationName, loop, useSuffix);
     }
+
     private void UpdateCharacterUI()
     {
         if (currentHealth >= 0)

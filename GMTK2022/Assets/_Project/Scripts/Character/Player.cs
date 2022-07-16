@@ -4,19 +4,34 @@ using UnityEngine;
 
 public class Player : Character
 {
-    public override void DamageAnimation()
-    {
-    }
+    protected override string spineSuffix { get { return "player"; } }
 
-    public override void DieAnimation()
-    {
-    }
+    //public override void OnAttack()
+    //{
+    //    spineHandler.PlayAnimation("attack_1", true);
+    //}
 
-    public override void HealAnimation()
-    {
-    }
+    //public override void OnDamageTaken()
+    //{
+    //}
 
-    public override void ShieldAnimation()
-    {
-    }
+    //public override void OnDie()
+    //{
+        
+    //}
+
+    //public override void OnHeal()
+    //{
+
+    //}
+
+    //public override void OnIdle()
+    //{
+
+    //}
+        
+    //public override void OnShieldIncrease()
+    //{
+        
+    //}
 }

@@ -105,18 +105,36 @@ public class BattleManager : MonoBehaviour
         sequence.Append(c.DORotate(_chargeRotate * dir, 0.1f));
 
         // Caster charges
-        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + _chargeFront * dir, 0.1f)); 
+        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + _chargeFront * dir, 0.2f)).OnStart(() =>
+        {
+            caster.PlayAnimation("attack_1");
+        });
         sequence.Join(c.DORotate(Vector3.zero, 0.2f));
 
         // Target gets hit
-        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(()=> { target.Damage(damage); }));
+        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f).OnStart(() =>
+        { 
+            target.Damage(damage);
+            target.PlayAnimation("damage_1");
+        }));
         sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
         
         // Move entities back to the original pos
-        sequence.Append(c.DOAnchorPosX(0, 0.3f));
-        sequence.Join(t.DOAnchorPosX(0, 0.2f)); 
+        sequence.Append(c.DOAnchorPosX(0, 0.3f)).OnStart(() =>
+        {
+            caster.PlayAnimation("attack_2");
+        });
+        sequence.Join(t.DOAnchorPosX(0, 0.2f)).OnStart(() =>
+        {
+            target.PlayAnimation("damage_2");
+        });
         sequence.Join(t.DORotate(Vector3.zero, 0.2f));
-        sequence.OnComplete(OnAbilityFinished);
+        sequence.OnComplete(() => 
+        {
+            caster.PlayAnimation("idle", true);
+            target.PlayAnimation("idle", true);
+            OnAbilityFinished();
+        });
         sequence.Play();
     }
 
