@@ -808,5 +808,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiceBox
       objectReference: {fileID: 0}
+    - target: {fileID: 5356502170912499709, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356502171133116121, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356502171272198633, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356502171401660740, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356502171983099558, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
