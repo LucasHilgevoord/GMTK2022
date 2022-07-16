@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using DG.Tweening;
+using TMPro;
 
 public enum CharacterAnimType
 { 
@@ -28,6 +29,8 @@ public abstract class Character : MonoBehaviour
     [Header("UI-Config")]
     public Image healthBar;
     public Image shieldBar;
+    public CanvasGroup dialogueBox;
+    public TextMeshProUGUI dialogueText;
 
     private void Start()
     {
@@ -38,6 +41,8 @@ public abstract class Character : MonoBehaviour
     #region virtual-methods
     public virtual void Damage(int damage)
     {
+        SayDialogue("OUCH! You think you're sh*t ?!");
+
         if (shield > 0)
         {
             if (shield >= damage)
@@ -71,12 +76,16 @@ public abstract class Character : MonoBehaviour
     }
     public virtual void Heal(int healAmount)
     {
+        SayDialogue("Ahhh, feels nice.");
+
         shield = Mathf.Clamp(currentHealth + healAmount, 0, healAmount) ;
         AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
     public virtual void AddShield(int shieldAmount)
     {
+        SayDialogue("HAHA! SHIELD POWERED UP!");
+
         shield = Mathf.Clamp(shield + shieldAmount, 0, maxShield);
         AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
@@ -84,6 +93,17 @@ public abstract class Character : MonoBehaviour
     public virtual void Die()
     {
         AnimateCharacter(CharacterAnimType.die);
+        SayDialogue("Damn I'm dead.");
+    }
+
+    public virtual void SayDialogue(string dialogue)
+    {
+        dialogueText.SetText(dialogue);
+
+        Sequence dialoguePopup = DOTween.Sequence();
+        dialoguePopup.Append(dialogueBox.DOFade(1.0f, 0.2f));
+        dialoguePopup.AppendInterval(1.5f);
+        dialoguePopup.Append(dialogueBox.DOFade(0.0f, 0.2f));
     }
     #endregion
 
