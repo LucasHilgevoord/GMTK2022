@@ -11,6 +11,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Character _player;
     private BattlePhase _currentPhase;
 
+    [Header("Attack")]
+    private float _chargeBack = 100;
+    private float _chargeFront = 200;
+    private float _chargeTargetHit = 100;
+    private Vector3 _chargeRotate = new Vector3(0, 0, 6);
+
     private void Start()
     {
         Initialize();
@@ -87,32 +93,31 @@ public class BattleManager : MonoBehaviour
 
     private void OnAttack(Character caster, Character target)
     {
-        Debug.Log("Attack");
         // Apply attack
         RectTransform c = caster._characterSprite;
         RectTransform t = target._characterSprite;
 
+        int dir = c.position.x < t.position.x ? 1 : -1;
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x - 100, 0.2f)); // Caster moves backwards
-        sequence.Append(c.DORotate(Vector3.forward * 6, 0.1f));
-        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + 200, 0.1f)); // Caster charges
+        
+        // Caster wind up the charge
+        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x - _chargeBack * dir, 0.2f)); 
+        sequence.Append(c.DORotate(_chargeRotate * dir, 0.1f));
+
+        // Caster charges
+        sequence.Append(c.DOAnchorPosX(c.anchoredPosition.x + _chargeFront * dir, 0.1f)); 
         sequence.Join(c.DORotate(Vector3.zero, 0.2f));
-        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + 100, 0.2f)); // Target gets hit
-        sequence.Join(t.DORotate(Vector3.forward * -6, 0.1f));
-        sequence.Append(c.DOAnchorPosX(0, 0.3f)); // Caster goes back
-        sequence.Join(t.DOAnchorPosX(0, 0.2f)); // Target goes back
+
+        // Target gets hit
+        sequence.Append(t.DOAnchorPosX(t.anchoredPosition.x + _chargeTargetHit * dir, 0.2f));
+        sequence.Join(t.DORotate(-_chargeRotate * dir, 0.1f));
+        
+        // Move entities back to the original pos
+        sequence.Append(c.DOAnchorPosX(0, 0.3f));
+        sequence.Join(t.DOAnchorPosX(0, 0.2f)); 
         sequence.Join(t.DORotate(Vector3.zero, 0.2f));
         sequence.OnComplete(OnAbilityFinished);
         sequence.Play();
-        // Move caster backwards
-        // Rotate caster a bit away from the target
-        // Charge the caster into the target
-        // Slowly Rotate caster back to oritinal rotation while charging
-        // Move target backwards
-        // Rotate target a bit away from the caster
-        // Move the caster and target back to original positions
-        
-        
     }
 
     private void OnDefend()
@@ -127,12 +132,19 @@ public class BattleManager : MonoBehaviour
 
     private void OnAbilityFinished()
     {
-        //NextPhase();
+        NextPhase();
     }
 
     private void OnEnemyTurn()
     {
         DiceBox.DiceRolled += OnDiceRolled;
-        _diceBox.RollCompleted();
+
+        IEnumerator wait()
+        {
+            yield return new WaitForSeconds(1);
+            _diceBox.RollCompleted();
+        };
+
+        StartCoroutine(wait());
     }
 }
