@@ -23,10 +23,11 @@ public class DiceBox : MonoBehaviour
 
     [Header("Dice Throws")]
     public DiceManager diceManager;
-    private Dice currentDice;
+    private Dice currentPlayerDice;
+    private Dice currentEnemyDice;
     public float forceStrength;
     public float rotateStrength;
-    private bool watchDice;
+    private bool watchDices;
     private float hideDiceCooldown = 1.0f;
 
     [Header("Dice Results")]
@@ -45,16 +46,27 @@ public class DiceBox : MonoBehaviour
             ThrowRandomDice();
         }
 
-        if (watchDice)
+        if (watchDices)
         {
-            if (currentDice.myRigidbody.velocity.x == 0
-                && currentDice.myRigidbody.velocity.y == 0
-                && currentDice.myRigidbody.velocity.z == 0)
+            if (currentPlayerDice.myRigidbody.velocity.x == 0
+                && currentPlayerDice.myRigidbody.velocity.y == 0
+                && currentPlayerDice.myRigidbody.velocity.z == 0
+                && currentEnemyDice.myRigidbody.velocity.x == 0
+                && currentEnemyDice.myRigidbody.velocity.y == 0
+                && currentEnemyDice.myRigidbody.velocity.z == 0)
             {
-                watchDice = false;
+                watchDices = false;
 
-                currentDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                currentDice.transform.DOMove(new Vector3(0, 1, 0), 1f)
+                currentPlayerDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                currentPlayerDice.transform.DOMove(new Vector3(-2f, 1, 0), 1f)
+                    .SetEase(Ease.OutBack)
+                    .OnComplete(() => {
+                        StartCoroutine(HideDice());
+                        Invoke(nameof(RollCompleted), 0.5f);
+                    });
+
+                currentEnemyDice.myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                currentEnemyDice.transform.DOMove(new Vector3(2f, 1, 0), 1f)
                     .SetEase(Ease.OutBack)
                     .OnComplete(() => {
                         StartCoroutine(HideDice());
@@ -66,47 +78,61 @@ public class DiceBox : MonoBehaviour
 
     internal void RollCompleted()
     {
-        int diceResult = DecideResult();
+        int[] diceResult = DecideResult();
         DiceResult result = new DiceResult(diceResult);
         DiceRolled?.Invoke(result);
     }
 
-    internal void RollAIDice(Dice[] dices)
-    {
-        SoundManager.Instance.Play(Sounds.diceRoll);
+    //internal void RollAIDice(Dice[] dices)
+    //{
+    //    SoundManager.Instance.Play(Sounds.diceRoll);
 
-        int rndDice = UnityEngine.Random.Range(0, dices.Length);
-        Dice dice = dices[rndDice];
+    //    int rndDice = UnityEngine.Random.Range(0, dices.Length);
+    //    Dice dice = dices[rndDice];
 
-        //DiceAbility ability = dice.sides[UnityEngine.Random.Range(0, dice.sides.Length)].type;
-        int diceValue = dice.sides.Length;
-        DiceResult result = new DiceResult(diceValue);
-        DiceRolled?.Invoke(result);
-    }
+    //    //DiceAbility ability = dice.sides[UnityEngine.Random.Range(0, dice.sides.Length)].type;
+    //    int[] diceValue = dice.sides.Length;
+    //    DiceResult result = new DiceResult(diceValue);
+    //    DiceRolled?.Invoke(result);
+    //}
 
     private IEnumerator HideDice()
     {
         yield return new WaitForSeconds(hideDiceCooldown);
-        diceManager.HideDice();
+        diceManager.HideDices();
     }
-    private int DecideResult()
+    private int[] DecideResult()
     {
-        Ray r = cameraToPlaceWalls.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        Vector3 playerDiceWorldPos = currentPlayerDice.transform.position;
+        Vector3 enemyDiceWorldPos = currentEnemyDice.transform.position;
+
+        Vector2 playerDiceWorldToViewportPoint = cameraToPlaceWalls.WorldToViewportPoint(playerDiceWorldPos);
+
+        Vector2 enemyDiceWorldToViewportPoint = cameraToPlaceWalls.WorldToViewportPoint(enemyDiceWorldPos);
+
+        Ray r = cameraToPlaceWalls.ViewportPointToRay(playerDiceWorldToViewportPoint);
         RaycastHit info;
         Physics.Raycast(r, out info, 100f, diceSideLayer);
 
-        if (info.collider != null)
-            return info.collider.GetComponent<DiceSide>().diceSideNumber;
+        Ray r2 = cameraToPlaceWalls.ViewportPointToRay(enemyDiceWorldToViewportPoint);
+        RaycastHit info2;
+        Physics.Raycast(r2, out info2, 100f, diceSideLayer);
 
-        return 1;
+        if (info.collider != null && info2.collider != null)
+            return new int[] {info.collider.GetComponent<DiceSide>().diceSideNumber, info2.collider.GetComponent<DiceSide>().diceSideNumber }; 
+
+        return null;
     }
 
     private void FixedUpdate()
     {
-        if (watchDice)
+        if (watchDices)
         {
-            currentDice.myRigidbody.drag += 0.01f;
-            currentDice.myRigidbody.angularDrag += 0.01f;
+            currentPlayerDice.myRigidbody.drag += 0.01f;
+            currentPlayerDice.myRigidbody.angularDrag += 0.01f;
+
+            currentEnemyDice.myRigidbody.drag += 0.01f;
+            currentEnemyDice.myRigidbody.angularDrag += 0.01f;
         }
     }
 
@@ -147,21 +173,36 @@ public class DiceBox : MonoBehaviour
     {
         SoundManager.Instance.Play(Sounds.diceRoll);
 
-        currentDice = diceManager.SetDice(DiceType.D20, 10, 5, 5);
+        Dice[] dices = diceManager.SetDice(DiceType.D20, DiceType.D20);
 
-        currentDice.myRigidbody.drag = 1f;
-        currentDice.myRigidbody.angularDrag = 1f;
+        // Player Dice
+        currentPlayerDice = dices[0];
 
-        currentDice.myRigidbody.constraints = RigidbodyConstraints.None;
+        currentPlayerDice.myRigidbody.drag = 1f;
+        currentPlayerDice.myRigidbody.angularDrag = 1f;
+
+        currentPlayerDice.myRigidbody.constraints = RigidbodyConstraints.None;
+
+        currentPlayerDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
+        currentPlayerDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
+
+        currentPlayerDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
+
+        // Enemy Dice
+        currentEnemyDice = dices[1];
+
+        currentEnemyDice.myRigidbody.drag = 1f;
+        currentEnemyDice.myRigidbody.angularDrag = 1f;
+
+        currentEnemyDice.myRigidbody.constraints = RigidbodyConstraints.None;
+
+        currentEnemyDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
+        currentEnemyDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
+
+        currentEnemyDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
 
 
-        currentDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
-        currentDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
-
-        //mainDice.myRigidbody.angularVelocity = new Vector3(UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength), UnityEngine.Random.Range(0, rotateStrength));
-        currentDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
-
-        watchDice = true;
+        watchDices = true;
     }
 
 

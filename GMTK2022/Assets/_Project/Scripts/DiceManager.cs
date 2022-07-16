@@ -8,101 +8,135 @@ public class DiceManager : MonoBehaviour
 {
     public DiceType type;
 
-    public Dice[] dices;
+    public Dice[] playerDices;
+    public Dice[] enemyDices;
 
-    private int _currentDiceIndex;
+    private int _currentPlayerDiceIndex;
+    private int _currentEnemyDiceIndex;
 
-    private Dice currentDice;
+    private Dice[] currentDices;
 
     /// <summary>
     /// Sets the dice to what we need
     /// </summary>
     /// <param name="type"></param>
-    public Dice SetDice(DiceType type)
+    public Dice[] SetDices(DiceType playerDiceType, DiceType enemyDiceType)
     {
         // Disable previous dice
-        HideDice();
+        HideDices();
 
-        // Show new dice
-        _currentDiceIndex = (int)type;
-        dices[_currentDiceIndex].gameObject.SetActive(true);
+        // Show new dices
+        _currentPlayerDiceIndex = (int)playerDiceType;
+        playerDices[_currentPlayerDiceIndex].gameObject.SetActive(true);
 
-        return dices[_currentDiceIndex];
+        _currentEnemyDiceIndex = (int)enemyDiceType;
+        enemyDices[_currentEnemyDiceIndex].gameObject.SetActive(true);
+
+        return new Dice[] { playerDices[_currentPlayerDiceIndex], enemyDices[_currentEnemyDiceIndex] };
     }
 
-    public Dice SetRandomDice()
+    //public Dice SetRandomDice()
+    //{
+    //    List<DiceType> diceTypes = Enum.GetValues(typeof(DiceType)).Cast<DiceType>().ToList();
+    //    return SetDice(diceTypes[UnityEngine.Random.Range(0, diceTypes.Count)]);
+    //}
+
+    public void HideDices()
     {
-        List<DiceType> diceTypes = Enum.GetValues(typeof(DiceType)).Cast<DiceType>().ToList();
-        return SetDice(diceTypes[UnityEngine.Random.Range(0, diceTypes.Count)]);
+        playerDices[_currentPlayerDiceIndex].gameObject.SetActive(false);
+        enemyDices[_currentEnemyDiceIndex].gameObject.SetActive(false);
     }
 
-    public void HideDice()
+    public Dice[] SetDice(DiceType playerDiceType, DiceType enemyDiceType)
     {
-        dices[_currentDiceIndex].gameObject.SetActive(false);
-    }
+        int playerDiceSideAmount = 0;
+        int enemyDiceSideAmount = 0;
 
-    public Dice SetDice(DiceType type, DiceAbility[] abilities)
-    {
-        int diceSideAmount = 0;
-
-        switch (type)
+        switch (playerDiceType)
         {
             case DiceType.D4:
-                diceSideAmount = 4;
+                playerDiceSideAmount = 4;
                 break;
             case DiceType.D6:
-                diceSideAmount = 6;
+                playerDiceSideAmount = 6;
                 break;
             case DiceType.D8:
-                diceSideAmount = 8;
+                playerDiceSideAmount = 8;
                 break;
             case DiceType.D10:
-                diceSideAmount = 10;
+                playerDiceSideAmount = 10;
                 break;
             case DiceType.D12:
-                diceSideAmount = 12;
+                playerDiceSideAmount = 12;
                 break;
             case DiceType.D20:
-                diceSideAmount = 20;
+                playerDiceSideAmount = 20;
+                break;
+        }
+
+        switch (enemyDiceType)
+        {
+            case DiceType.D4:
+                enemyDiceSideAmount = 4;
+                break;
+            case DiceType.D6:
+                enemyDiceSideAmount = 6;
+                break;
+            case DiceType.D8:
+                enemyDiceSideAmount = 8;
+                break;
+            case DiceType.D10:
+                enemyDiceSideAmount = 10;
+                break;
+            case DiceType.D12:
+                enemyDiceSideAmount = 12;
+                break;
+            case DiceType.D20:
+                enemyDiceSideAmount = 20;
                 break;
         }
 
         // Set the dice
-        currentDice = SetDice(type);
+        currentDices = SetDices(playerDiceType, enemyDiceType);
 
         // Set all the sides
-        SetSides(diceSideAmount);
+        SetSides(playerDiceSideAmount, enemyDiceSideAmount);
 
-        return currentDice;
+        return currentDices;
     }
 
-    public Dice SetDice(DiceType type, int attacks, int defends, int heals)
+    //public Dice SetDice(DiceType type, int attacks, int defends, int heals)
+    //{
+    //    List<DiceAbility> diceSet = new List<DiceAbility>();
+
+    //    for (int i = 0; i < attacks; i++)
+    //    {
+    //        diceSet.Add(DiceAbility.Attack);
+    //    }
+
+    //    for (int i = 0; i < defends; i++)
+    //    {
+    //        diceSet.Add(DiceAbility.Defend);
+    //    }
+
+    //    for (int i = 0; i < heals; i++)
+    //    {
+    //        diceSet.Add(DiceAbility.Heal);
+    //    }
+
+    //    return SetDice(type);
+    //}
+
+    private void SetSides(int playerDiceSideAmount, int enemyDiceSideAmount)
     {
-        List<DiceAbility> diceSet = new List<DiceAbility>();
-
-        for (int i = 0; i < attacks; i++)
+        for (int i = 0; i < playerDiceSideAmount; i++)
         {
-            diceSet.Add(DiceAbility.Attack);
+            currentDices[0].SetSide(i+1, i);
         }
 
-        for (int i = 0; i < defends; i++)
+        for (int i = 0; i < enemyDiceSideAmount; i++)
         {
-            diceSet.Add(DiceAbility.Defend);
-        }
-
-        for (int i = 0; i < heals; i++)
-        {
-            diceSet.Add(DiceAbility.Heal);
-        }
-
-        return SetDice(type, diceSet.ToArray());
-    }
-
-    private void SetSides(int diceSideAmount)
-    {
-        for (int i = 0; i < diceSideAmount; i++)
-        {
-            currentDice.SetSide(i+1, i);
+            currentDices[1].SetSide(i + 1, i);
         }
     }
 }

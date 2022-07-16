@@ -1,9 +1,9 @@
 public class DiceResult
 {
-    public int diceValue;
+    public int[] diceValues;
 
-    public DiceResult(int diceValue)
+    public DiceResult(int[] diceValues)
     {
-        this.diceValue = diceValue;
+        this.diceValues = diceValues;
     }
 }

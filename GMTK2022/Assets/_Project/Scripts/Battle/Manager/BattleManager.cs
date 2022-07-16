@@ -76,7 +76,7 @@ public class BattleManager : MonoBehaviour
         Character target = _currentPhase == BattlePhase.PlayerTurn ? _enemyManager.FocussedEnemy : _player;
         // Apply ability
 
-        Debug.Log("DICE VALUE: " + result.diceValue);
+        Debug.Log("Player dice result: " + result.diceValues[0] + " | Enemy dice result: " + result.diceValues[1]);
 
         //switch (result.diceValue)
         //{
@@ -194,7 +194,7 @@ public class BattleManager : MonoBehaviour
         IEnumerator wait()
         {
             yield return new WaitForSeconds(1);
-            _diceBox.RollAIDice(_enemyManager.FocussedEnemy.dices);
+            //_diceBox.RollAIDice(_enemyManager.FocussedEnemy.dices);
         };
 
         StartCoroutine(wait());
