@@ -21,4 +21,8 @@ public class Enemy : Character
     public override void ShieldAnimation()
     {
     }
+
+    public override void DieAnimation()
+    {
+    }
 }

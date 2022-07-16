@@ -8,6 +8,10 @@ public class Player : Character
     {
     }
 
+    public override void DieAnimation()
+    {
+    }
+
     public override void HealAnimation()
     {
     }

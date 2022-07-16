@@ -9,7 +9,8 @@ public enum CharacterAnimType
 { 
     attack,
     heal,
-    defend
+    defend,
+    die
 }
 
 public abstract class Character : MonoBehaviour
@@ -64,6 +65,9 @@ public abstract class Character : MonoBehaviour
 
         AnimateCharacter(CharacterAnimType.attack);
         UpdateCharacterUI();
+
+        if (currentHealth <= 0)
+            Die();
     }
     public virtual void Heal(int healAmount)
     {
@@ -77,12 +81,17 @@ public abstract class Character : MonoBehaviour
         AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
+    public virtual void Die()
+    {
+        AnimateCharacter(CharacterAnimType.die);
+    }
     #endregion
 
     #region abstract-methods
     public abstract void DamageAnimation();
     public abstract void HealAnimation();
     public abstract void ShieldAnimation();
+    public abstract void DieAnimation();
     #endregion
 
     private void AnimateCharacter(CharacterAnimType animType)
@@ -97,6 +106,9 @@ public abstract class Character : MonoBehaviour
                 break;
             case CharacterAnimType.defend:
                 ShieldAnimation();
+                break;
+            case CharacterAnimType.die:
+                DieAnimation();
                 break;
         }
     }
