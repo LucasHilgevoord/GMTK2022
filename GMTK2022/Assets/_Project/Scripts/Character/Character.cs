@@ -146,6 +146,7 @@ public abstract class Character : MonoBehaviour
 
     internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)
     {
+        Debug.Log("play " + animationName  + " animation " + spineSuffix);
         spineHandler.PlayAnimation(animationName, loop, useSuffix);
     }
 
