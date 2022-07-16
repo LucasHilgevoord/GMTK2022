@@ -1905,8 +1905,8 @@ MonoBehaviour:
   - {fileID: 1782031853}
   - {fileID: 1320619928}
   - {fileID: 1964163552}
-  _hoverHight: 100
-  _hoverSpeed: 2
+  _hoverHeight: 100
+  _hoverSpeed: 500
 --- !u!4 &1529390868
 Transform:
   m_ObjectHideFlags: 0
@@ -2907,10 +2907,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2084313679}
     m_Modifications:
-    - target: {fileID: 1988349626177674758, guid: 3fb8465dd1244054996b0a1b879dc6d6, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -71
-      objectReference: {fileID: 0}
     - target: {fileID: 4738695092508062257, guid: 3fb8465dd1244054996b0a1b879dc6d6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
