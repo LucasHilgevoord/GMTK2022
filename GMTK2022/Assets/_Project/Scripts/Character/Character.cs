@@ -110,7 +110,7 @@ public class Character : MonoBehaviour
     public void Die()
     {
         //AnimateCharacter(CharacterAnimType.die);
-        SayDialogue("Damn I'm dead.");
+        SayDialogue("I don't feel so good..");
     }
 
     public void SayDialogue(string dialogue)
