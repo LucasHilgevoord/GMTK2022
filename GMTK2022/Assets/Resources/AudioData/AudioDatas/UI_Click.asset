@@ -15,5 +15,5 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: 8b404f0c7e04a3e489e9f12c7632dcad, type: 3}
   volume: 1
   pitch: 1
-  randomPitch: 0
+  randomPitch: 1
   AudioName: UI_Click

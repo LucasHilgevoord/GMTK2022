@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class SoundManager : MonoBehaviour
     private AudioDataCollection collection;
     public Dictionary<string, AudioData> AudioDict = new Dictionary<string, AudioData>() { };
 
+    
     private void Awake()
     {
         if (Instance == null)
@@ -26,6 +28,13 @@ public class SoundManager : MonoBehaviour
         {
             AudioDict.Add(audio.AudioName, audio);
         }
+
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+    }
+
+    private void OnActiveSceneChanged(Scene arg0, Scene arg1)
+    {
+        DestroyAllSources();
     }
 
     /// <summary>
@@ -85,7 +94,7 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// Destroys the unused sources, optimizing the amount of audio sources
     /// </summary>
-    public void DestroySources()
+    public void DestroyUnusedSources()
     {
         List<AudioSource> unusedSources = new List<AudioSource>();
         foreach (AudioSource source in sources)
@@ -99,6 +108,15 @@ public class SoundManager : MonoBehaviour
         {
             sources.Remove(unusedSource);
             Destroy(unusedSource);
+        }
+    }
+
+    public void DestroyAllSources()
+    {
+        foreach (AudioSource source in sources.ToArray())
+        {
+            sources.Remove(source);
+            Destroy(source);
         }
     }
 }
