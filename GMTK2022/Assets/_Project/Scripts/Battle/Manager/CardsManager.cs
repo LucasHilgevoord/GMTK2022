@@ -15,9 +15,9 @@ public class CardsManager : MonoBehaviour
     [Header("Tweens")]
     [SerializeField] private float _showCardsDuration = 0.5f;
     [SerializeField] private float _showCardsDelay = 0.5f;
-    [SerializeField] private float _hoverHeight = 10;
-    [SerializeField] private float _hoverSpeed = 30;
-    [SerializeField] private float _hoverReturnSpeed = 50;
+    [SerializeField] private float _hoverHeight = 200;
+    [SerializeField] private float _focusDuration = 0.2f;
+    [SerializeField] private float _focusReturnDuration = 50;
 
     private bool _enableActions;
 
@@ -77,14 +77,14 @@ public class CardsManager : MonoBehaviour
 
     public void StartCardHover()
     {
-        _focussedCard.elements.DOAnchorPos(Vector2.up * _hoverHeight, _hoverSpeed).SetLoops(-1, LoopType.Yoyo).SetSpeedBased().SetEase(Ease.InOutSine);
+        _focussedCard.elements.DOAnchorPos(Vector2.up * _hoverHeight, _focusDuration).SetEase(Ease.InOutSine);
     }
 
     public void StopCardHover()
     {
         // Kill the ongoing hoover
         DOTween.Kill(_focussedCard.elements);
-        _focussedCard.elements.DOAnchorPos(Vector2.zero, _hoverReturnSpeed).SetSpeedBased().SetEase(Ease.InOutSine);
+        _focussedCard.elements.DOAnchorPos(Vector2.zero, _focusReturnDuration).SetEase(Ease.InOutSine);
     }
 
     public void PickCard()

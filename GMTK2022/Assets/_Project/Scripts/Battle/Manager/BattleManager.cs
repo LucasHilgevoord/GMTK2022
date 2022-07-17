@@ -23,6 +23,8 @@ public class BattleManager : MonoBehaviour
     private float _chargeTargetHit = 100;
     private Vector3 _chargeRotate = new Vector3(0, 0, 6);
 
+    public ActiveAbilitiesPanel activeAbilitiesPanel;
+
     private void Start()
     {
         SoundManager.Instance.Play(Sounds.battleMusic, true);
@@ -46,7 +48,9 @@ public class BattleManager : MonoBehaviour
                 InitializeBattle();
                 break;
             case BattlePhase.PickAbility:
-                CardsManager.CardPicked += OnAbiliyPicked;
+                CardsManager.CardPicked += OnAbilityPicked;
+                activeAbilitiesPanel.ShowActiveAbility(false, false);
+                activeAbilitiesPanel.ShowActiveAbility(true, false);
                 _cardsManager.ShowCards();
                 break;
             case BattlePhase.ThrowDice:
@@ -68,19 +72,24 @@ public class BattleManager : MonoBehaviour
         NextPhase();
     }
 
-    private void OnAbiliyPicked(CardAbility ability)
+    private void OnAbilityPicked(CardAbility ability)
     {
-        CardsManager.CardPicked -= OnAbiliyPicked;
+        CardsManager.CardPicked -= OnAbilityPicked;
         _playerTurn.SetAbility(ability);
         _enemyTurn.SetAbility((CardAbility)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CardAbility)).Length));
-        DisplayAbilityPick();
+
+        activeAbilitiesPanel.SetActiveAbilityIcon(true, _playerTurn.ability);
+        activeAbilitiesPanel.SetActiveAbilityIcon(false, _enemyTurn.ability);
+        activeAbilitiesPanel.ShowActiveAbility(true, true);
+        activeAbilitiesPanel.ShowActiveAbility(false, true);
+
+        NextPhase();
     }
 
     private void DisplayAbilityPick()
     {
         _player.iconEffect.ShowIcon(_playerTurn.ability);
         _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyTurn.ability);
-        NextPhase();
     }
 
     private void OnDiceRolled(int[] result)
@@ -98,6 +107,14 @@ public class BattleManager : MonoBehaviour
         float nextPhaseDelay = 2;
         CardAbility playerAbility = _playerTurn.ability;
         CardAbility enemyAbility = _enemyTurn.ability;
+
+        if (playerValue > attackerValue) activeAbilitiesPanel.ShowActiveAbility(false, false);
+        else if (attackerValue > playerValue) activeAbilitiesPanel.ShowActiveAbility(true, false);
+        else
+        {
+            activeAbilitiesPanel.ShowActiveAbility(false, false);
+            activeAbilitiesPanel.ShowActiveAbility(true, false);
+        }
 
         if (playerAbility == CardAbility.Attack && enemyAbility == CardAbility.Attack)
         {
@@ -219,7 +236,7 @@ public class BattleManager : MonoBehaviour
         if (winnerAbility == CardAbility.Parry)
         {
             AttackTarget(winner, loser, loserValue);
-            //AddShield(winner, winnerValue - loserValue);
+            AddShield(winner, winnerValue - loserValue);
         }
         else
             AttackTarget(winner, loser, winnerValue);

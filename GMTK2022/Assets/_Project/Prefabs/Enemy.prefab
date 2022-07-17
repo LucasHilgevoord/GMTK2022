@@ -33,15 +33,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9170798190654773947, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170798190756088796, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
-      propertyPath: m_Color.b
-      value: 0.36862743
-      objectReference: {fileID: 0}
-    - target: {fileID: 9170798190756088796, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
-      propertyPath: m_Color.g
-      value: 0.42186603
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9170798191342720338, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: initialSkinName
