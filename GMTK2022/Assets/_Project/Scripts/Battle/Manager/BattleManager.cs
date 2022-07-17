@@ -83,14 +83,14 @@ public class BattleManager : MonoBehaviour
 
         _playerTurn.SetAbility(ability);
         _enemyTurn.SetAbility((CardAbility)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CardAbility)).Length));
-        DisplayAbilityPick();
+        //DisplayAbilityPick();
+        NextPhase();
     }
 
     private void DisplayAbilityPick()
     {
         _player.iconEffect.ShowIcon(_playerTurn.ability);
         _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyTurn.ability);
-        NextPhase();
     }
 
     private void OnDiceRolled(int[] result)
