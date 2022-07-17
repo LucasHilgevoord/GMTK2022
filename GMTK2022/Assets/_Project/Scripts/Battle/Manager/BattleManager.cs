@@ -86,17 +86,20 @@ public class BattleManager : MonoBehaviour
         NextPhase();
     }
 
-    private void DisplayAbilityPick()
-    {
-        _player.iconEffect.ShowIcon(_playerTurn.ability);
-        _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyTurn.ability);
-    }
-
     private void OnDiceRolled(int[] result)
     {
         DiceBox.DiceRolled -= OnDiceRolled;
-        Debug.Log(_playerTurn);
-        Debug.Log(result.Length);
+
+        // QUICKFIX
+        if (result == null || result.Length == 0)
+        {
+            result = new int[]{ 0, 0 };
+        }
+        else if (result.Length == 1)
+        {
+            result = new int[] { result[0], result[0] };
+        }
+
         _playerTurn.SetDiceValue(result[0]);
         _enemyTurn.SetDiceValue(result[1]);
         NextPhase();

@@ -31,6 +31,10 @@ PrefabInstance:
       propertyPath: spineSuffix
       value: enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 9031521111040919771, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 9170798190654773947, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: m_IsActive
       value: 1
