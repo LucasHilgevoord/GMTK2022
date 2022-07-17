@@ -86,6 +86,8 @@ public class BattleManager : MonoBehaviour
     private void OnDiceRolled(int[] result)
     {
         DiceBox.DiceRolled -= OnDiceRolled;
+        Debug.Log(_playerTurn);
+        Debug.Log(result.Length);
         _playerTurn.SetDiceValue(result[0]);
         _enemyTurn.SetDiceValue(result[1]);
         NextPhase();
@@ -118,7 +120,7 @@ public class BattleManager : MonoBehaviour
             {
                 AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
             }
-            else if (enemyAbility == CardAbility.Attack)
+            if (enemyAbility == CardAbility.Attack)
             {
                 AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             }
@@ -217,12 +219,10 @@ public class BattleManager : MonoBehaviour
         if (winnerAbility == CardAbility.Parry)
         {
             AttackTarget(winner, loser, loserValue);
-            AddShield(winner, winnerValue - loserValue);
+            //AddShield(winner, winnerValue - loserValue);
         }
         else
             AttackTarget(winner, loser, winnerValue);
-
-        // Potential: Add shield if the parry wins
     }
 
     private void AddShield(Character caster, int shield)

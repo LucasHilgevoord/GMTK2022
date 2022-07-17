@@ -8,8 +8,8 @@ public class DiceManager : MonoBehaviour
 {
     public DiceType type;
 
-    public Dice[] playerDices;
-    public Dice[] enemyDices;
+    public Dice playerDice;
+    public Dice enemyDice;
 
     private int _currentPlayerDiceIndex;
     private int _currentEnemyDiceIndex;
@@ -27,18 +27,18 @@ public class DiceManager : MonoBehaviour
 
         // Show new dices
         _currentPlayerDiceIndex = (int)playerDiceType;
-        playerDices[_currentPlayerDiceIndex].gameObject.SetActive(true);
+        playerDice.gameObject.SetActive(true);
 
         _currentEnemyDiceIndex = (int)enemyDiceType;
-        enemyDices[_currentEnemyDiceIndex].gameObject.SetActive(true);
+        enemyDice.gameObject.SetActive(true);
 
-        return new Dice[] { playerDices[_currentPlayerDiceIndex], enemyDices[_currentEnemyDiceIndex] };
+        return new Dice[] { playerDice, enemyDice };
     }
 
     public void HideDices()
     {
-        playerDices[_currentPlayerDiceIndex].gameObject.SetActive(false);
-        enemyDices[_currentEnemyDiceIndex].gameObject.SetActive(false);
+        playerDice.gameObject.SetActive(false);
+        enemyDice.gameObject.SetActive(false);
     }
 
     public Dice[] SetDice(DiceType playerDiceType, DiceType enemyDiceType)

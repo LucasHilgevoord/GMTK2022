@@ -19,6 +19,18 @@ PrefabInstance:
       propertyPath: battleEffectHandler
       value: 
       objectReference: {fileID: 3889411114577316763}
+    - target: {fileID: 9170798190756088796, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_Color.b
+      value: 0.15294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170798190756088796, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_Color.g
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170798190756088796, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7647059
+      objectReference: {fileID: 0}
     - target: {fileID: 9170798192360812244, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
