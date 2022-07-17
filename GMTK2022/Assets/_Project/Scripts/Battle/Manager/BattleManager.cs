@@ -68,16 +68,6 @@ public class BattleManager : MonoBehaviour
         NextPhase();
     }
 
-    private void OnDiceRolled(int[] result)
-    {
-        DiceBox.DiceRolled -= OnDiceRolled;
-        Debug.Log(result.Length);
-        Debug.Log(_playerTurn);
-        _playerTurn.SetDiceValue(result[0]);
-        _enemyTurn.SetDiceValue(result[1]);
-        NextPhase();
-    }
-
     private void OnAbiliyPicked(CardAbility ability)
     {
         CardsManager.CardPicked -= OnAbiliyPicked;
@@ -93,6 +83,14 @@ public class BattleManager : MonoBehaviour
         NextPhase();
     }
 
+    private void OnDiceRolled(int[] result)
+    {
+        DiceBox.DiceRolled -= OnDiceRolled;
+        _playerTurn.SetDiceValue(result[0]);
+        _enemyTurn.SetDiceValue(result[1]);
+        NextPhase();
+    }
+
     private void CheckAbility(int playerValue, int attackerValue)
     {
         float nextPhaseDelay = 2;
@@ -101,6 +99,7 @@ public class BattleManager : MonoBehaviour
 
         if (playerAbility == CardAbility.Attack && enemyAbility == CardAbility.Attack)
         {
+            // CASE: Both characters attack
             nextPhaseDelay = 3;
             AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, () =>
             {
@@ -110,9 +109,11 @@ public class BattleManager : MonoBehaviour
         else if ((playerAbility == CardAbility.Attack && enemyAbility == CardAbility.Parry) ||
             (playerAbility == CardAbility.Parry && enemyAbility == CardAbility.Attack))
         {
+            // CASE: One character parries, see which one is the winner
             OnParry(playerValue, attackerValue);
         } else
         {
+            // Only one attacks, and the other one does something else
             if (playerAbility == CardAbility.Attack)
             {
                 AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
@@ -122,10 +123,12 @@ public class BattleManager : MonoBehaviour
                 AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             }
             
+            // Healing characters
             if (playerAbility == CardAbility.Heal)
             {
                 HealTarget(_player, playerValue);
-            } else if (enemyAbility == CardAbility.Heal)
+            }
+            if (enemyAbility == CardAbility.Heal)
             {
                 HealTarget(_enemyManager.FocussedEnemy, attackerValue);
             }
