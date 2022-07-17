@@ -22,7 +22,7 @@ public class Character : MonoBehaviour
     public RectTransform _characterSprite;
     public CanvasGroup statusGroup;
 
-    protected int maxHealth;
+    public int maxHealth = 100;
     protected int maxShield => maxHealth;
     protected string characterName;
 
@@ -41,19 +41,18 @@ public class Character : MonoBehaviour
     [Header("Animations")]
     public Image shadow;
     public GameObject _spineObj;
-    protected SpineHandler spineHandler;
+    public SpineHandler spineHandler;
     public string spineSuffix;
     public ParticleSystem healParticle; 
 
-    private void Start()
+    private void Awake()
     {
-        Initialize(null);
+        Initialize();
     }
 
-    private void Initialize(CharacterData baseData)
+    private void Initialize()
     {
-        //characterName = baseData.GetEnemyName();
-        maxHealth = 100;//baseData.GetMaxHealth();
+        //maxHealth = 100;
         currentHealth = maxHealth;
         currentShield = 0;
 
@@ -90,8 +89,6 @@ public class Character : MonoBehaviour
         {
             currentHealth -= damage;
             battleEffectHandler.ShowBattleEffect(CharacterInteractionType.takeHealthDamage, damage);
-
-            Debug.Log("health " + currentHealth);
         }
 
         // Clamp the values
@@ -139,6 +136,14 @@ public class Character : MonoBehaviour
     internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)
     {
         spineHandler.PlayAnimation(animationName, loop, useSuffix);
+    }
+
+    internal void ResetStats()
+    {
+        healParticle.Play();
+        currentHealth = maxHealth;
+        currentShield = 0;
+        UpdateCharacterUI();
     }
 
     private void UpdateCharacterUI(bool snap = false)

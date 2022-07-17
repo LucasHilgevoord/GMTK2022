@@ -16,9 +16,13 @@ public class SpineHandler
         this.suffix = suffix;
 
         _skeletonAnimation = skeletonAnimation.GetComponent<SkeletonGraphic>();
-        Debug.Log(_skeletonAnimation);
         _animationState = _skeletonAnimation.AnimationState;
         _skeleton = _skeletonAnimation.Skeleton;
+    }
+
+    internal void ChangeSkin(string skin)
+    {
+        _skeleton.SetSkin(skin);
     }
 
     internal void PlayAnimation(string animationName, bool loop = false, bool useSuffix = false)

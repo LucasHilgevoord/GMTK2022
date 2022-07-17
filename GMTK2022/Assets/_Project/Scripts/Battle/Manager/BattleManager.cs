@@ -27,13 +27,24 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        SoundManager.Instance.Play(Sounds.battleMusic, true);
-        Initialize();
+        SoundManager.Instance.Play(Sounds.battleMusic, true, 0.8f);
+        StartBattle(true);
     }
 
-    private void Initialize()
+    private void StartBattle(bool initialize = false)
     {
         _currentPhase = (BattlePhase)0;
+        EnemyManager.NextEnemyAppeared += OnNextEnemyAppeared;
+        
+        if (!initialize)
+            _player.ResetStats();
+            
+        _enemyManager.NextEnemy();
+    }
+
+    private void OnNextEnemyAppeared()
+    {
+        EnemyManager.NextEnemyAppeared -= OnNextEnemyAppeared;
         NextPhase(false);
     }
 
@@ -135,16 +146,6 @@ public class BattleManager : MonoBehaviour
             OnParry(playerValue, attackerValue);
         } else
         {
-            // Only one attacks, and the other one does something else
-            if (playerAbility == CardAbility.Attack)
-            {
-                AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
-            }
-            if (enemyAbility == CardAbility.Attack)
-            {
-                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
-            }
-            
             // Healing characters
             if (playerAbility == CardAbility.Heal)
             {
@@ -153,6 +154,16 @@ public class BattleManager : MonoBehaviour
             if (enemyAbility == CardAbility.Heal)
             {
                 HealTarget(_enemyManager.FocussedEnemy, attackerValue);
+            }
+
+            // Only one attacks, and the other one does something else
+            if (playerAbility == CardAbility.Attack)
+            {
+                AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
+            }
+            if (enemyAbility == CardAbility.Attack)
+            {
+                AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             }
         }
 
@@ -261,19 +272,19 @@ public class BattleManager : MonoBehaviour
     {
         target.PlayAnimation("die", false, true);
         Sequence dieSequence = DOTween.Sequence();
-
-        dieSequence.PrependInterval(1f);
         dieSequence.Append(target.statusGroup.DOFade(0, 0.5f));
         dieSequence.Join(target.shadow.DOFade(0, 0.5f));
-        dieSequence.Play();
-
-        if (target == _player)
+        dieSequence.AppendInterval(2f);
+        dieSequence.Play().OnComplete(() => 
         {
-            Debug.Log("You lost");
-        }
-        else
-        {
-            Debug.Log("You win!");
-        }
+            if (target == _player)
+            {
+                Debug.Log("You lost");
+            }
+            else
+            {
+                StartBattle();
+            }
+        });
     }
 }

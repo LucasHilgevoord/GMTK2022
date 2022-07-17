@@ -31,10 +31,10 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// The standard Play function, plays a clip
     /// </summary>
-    public void Play(string audioName, bool loop = false)
+    public void Play(string audioName, bool loop = false, float volume = 1)
     {
         AudioSource source = PrepareSource(audioName);
-            
+        source.volume = volume;
         source.loop = loop;
         source.Play();
     }

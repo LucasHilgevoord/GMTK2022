@@ -179,6 +179,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ActiveAbilitiesContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 5196466648747591426, guid: 49d7e9c691381fc47bfa6f9755b2b588, type: 3}
+      propertyPath: heal
+      value: 
+      objectReference: {fileID: 21300000, guid: a6b42a693fd066148987b2cbc344e222, type: 3}
+    - target: {fileID: 5196466648747591426, guid: 49d7e9c691381fc47bfa6f9755b2b588, type: 3}
+      propertyPath: parry
+      value: 
+      objectReference: {fileID: 21300000, guid: be97d9434f6490046b84b7b00688b60b, type: 3}
+    - target: {fileID: 5196466648747591426, guid: 49d7e9c691381fc47bfa6f9755b2b588, type: 3}
+      propertyPath: attack
+      value: 
+      objectReference: {fileID: 21300000, guid: 656ba8f9b63f3f246861f988c9b755be, type: 3}
     - target: {fileID: 5196466648747591427, guid: 49d7e9c691381fc47bfa6f9755b2b588, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -310,7 +322,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64f463edaaa2c64e9f561929f5f5cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testEnemy: {fileID: 1894457217}
+  characterSkins:
+  - enemy_1
+  - enemy_2
+  - enemy_3
+  - enemy_4
+  enemyField: {fileID: 672572712}
+  enemyPrefab: {fileID: 7378339596291421975, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
 --- !u!4 &241525496
 Transform:
   m_ObjectHideFlags: 0
@@ -1186,6 +1204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4923483280414986168, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1204,7 +1226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1212,7 +1234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1256,7 +1278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -367.5
       objectReference: {fileID: 0}
     - target: {fileID: 4923483280414986171, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1288,6 +1310,7 @@ GameObject:
   - component: {fileID: 987559635}
   - component: {fileID: 987559637}
   - component: {fileID: 987559636}
+  - component: {fileID: 987559638}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -1335,7 +1358,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6cdcd570fcf458a47919b3d2e2d44c57, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 693072f00d0c74b47bc7194108f5c200, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1353,6 +1376,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987559634}
   m_CullTransparentMesh: 1
+--- !u!114 &987559638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987559634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f1d8fea3687e74cbb4fe15f937414a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprites:
+  - {fileID: 21300000, guid: 693072f00d0c74b47bc7194108f5c200, type: 3}
+  - {fileID: 21300000, guid: 7131ef2588f0ad24cb3368b96d327cd1, type: 3}
+  _startIndex: 0
+  _animationSpeed: 0.5
 --- !u!1 &1066865661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,6 +1462,10 @@ PrefabInstance:
     - target: {fileID: 5337855178762522872, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5356502170869485186, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
+      propertyPath: forceStrength
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5356502170869485186, guid: a5f62e9622cb52645ba9c8200b9f0cb7, type: 3}
       propertyPath: cameraToPlaceWalls
@@ -2255,17 +2299,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 10.660034}
   m_SizeDelta: {x: 0, y: 653.84}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1894457217 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7378339596291421975, guid: 1acf294b89d224c40b9526d023ee7878, type: 3}
-  m_PrefabInstance: {fileID: 985105855}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d91bc38f2c632a14db53c0e0ed7abfd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1928108577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,6 +2503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2084313679}
+  - component: {fileID: 2084313680}
   m_Layer: 5
   m_Name: Cards
   m_TagString: Untagged
@@ -2500,6 +2534,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1150.3, y: 573.1}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &2084313680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084313678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77a77d852358924f87736979036bb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverHeight: 10
+  _hoverSpeed: 10
 --- !u!1001 &2436796803333232901
 PrefabInstance:
   m_ObjectHideFlags: 0

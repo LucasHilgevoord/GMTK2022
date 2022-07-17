@@ -166,10 +166,10 @@ public class DiceBox : MonoBehaviour
 
         currentEnemyDice.myRigidbody.constraints = RigidbodyConstraints.None;
 
-        currentEnemyDice.transform.localPosition = new Vector3(-boxWidth / 2f + 2f, wallsize / 2f, -boxHeight / 2f + 2f);
+        currentEnemyDice.transform.localPosition = new Vector3(boxWidth / 2f - 2f, wallsize / 2f, -boxHeight / 2f + 2f);
         currentEnemyDice.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
 
-        currentEnemyDice.myRigidbody.velocity = new Vector3(UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
+        currentEnemyDice.myRigidbody.velocity = new Vector3(-UnityEngine.Random.Range(0, forceStrength), 0, UnityEngine.Random.Range(0, forceStrength));
 
 
         watchDices = true;

@@ -28,6 +28,10 @@ PrefabInstance:
       value: 125.310005
       objectReference: {fileID: 0}
     - target: {fileID: 6733903359753197176, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
+      propertyPath: maxHealth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6733903359753197176, guid: 7e96ab59c80c8ab4b8ea9865cf0d71e8, type: 3}
       propertyPath: spineSuffix
       value: enemy
       objectReference: {fileID: 0}
