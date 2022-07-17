@@ -15,7 +15,7 @@ public class BattleManager : MonoBehaviour
 
     [Header("Characters")]
     [SerializeField] private Character _player;
-    private CardAbility _playerAbility, _enemyAbility;
+    private TurnData _playerTurn, _enemyTurn;
 
     [Header("Attack")]
     private float _chargeBack = 100;
@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
 
     private void Initialize()
     {
-        _currentPhase = BattlePhase.PickAbility;
+        _currentPhase = (BattlePhase)0;
         NextPhase(false);
     }
 
@@ -42,41 +42,64 @@ public class BattleManager : MonoBehaviour
 
         switch (_currentPhase)
         {
+            case BattlePhase.Initialize:
+                InitializeBattle();
+                break;
             case BattlePhase.PickAbility:
                 CardsManager.CardPicked += OnAbiliyPicked;
                 _cardsManager.ShowCards();
                 break;
             case BattlePhase.ThrowDice:
-                NextPhase(); // TEMP
+                DiceBox.DiceRolled += OnDiceRolled;
+                _diceBox.ThrowRandomDice();
                 break;
             case BattlePhase.Ability:
-                CheckAbility(UnityEngine.Random.Range(1, 20), UnityEngine.Random.Range(1, 20));
+                CheckAbility(_playerTurn.diceValue, _enemyTurn.diceValue);
                 break;
             default:
                 break;
         }
     }
 
+    private void InitializeBattle()
+    {
+        _playerTurn = new TurnData(_player);
+        _enemyTurn = new TurnData(_enemyManager.FocussedEnemy);
+        NextPhase();
+    }
+
+    private void OnDiceRolled(int[] result)
+    {
+        DiceBox.DiceRolled -= OnDiceRolled;
+        Debug.Log(result.Length);
+        Debug.Log(_playerTurn);
+        _playerTurn.SetDiceValue(result[0]);
+        _enemyTurn.SetDiceValue(result[1]);
+        NextPhase();
+    }
+
     private void OnAbiliyPicked(CardAbility ability)
     {
         CardsManager.CardPicked -= OnAbiliyPicked;
-        _playerAbility = ability;
-        _enemyAbility = (CardAbility)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CardAbility)).Length - 1);
+        _playerTurn.SetAbility(ability);
+        _enemyTurn.SetAbility((CardAbility)UnityEngine.Random.Range(0, Enum.GetNames(typeof(CardAbility)).Length));
         DisplayAbilityPick();
     }
 
     private void DisplayAbilityPick()
     {
-        _player.iconEffect.ShowIcon(_playerAbility);
-        _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyAbility);
+        _player.iconEffect.ShowIcon(_playerTurn.ability);
+        _enemyManager.FocussedEnemy.iconEffect.ShowIcon(_enemyTurn.ability);
         NextPhase();
     }
 
     private void CheckAbility(int playerValue, int attackerValue)
     {
         float nextPhaseDelay = 2;
+        CardAbility playerAbility = _playerTurn.ability;
+        CardAbility enemyAbility = _enemyTurn.ability;
 
-        if (_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Attack)
+        if (playerAbility == CardAbility.Attack && enemyAbility == CardAbility.Attack)
         {
             nextPhaseDelay = 3;
             AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue, () =>
@@ -84,25 +107,25 @@ public class BattleManager : MonoBehaviour
                 AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             });
         } 
-        else if ((_playerAbility == CardAbility.Attack && _enemyAbility == CardAbility.Parry) ||
-            (_playerAbility == CardAbility.Parry && _enemyAbility == CardAbility.Attack))
+        else if ((playerAbility == CardAbility.Attack && enemyAbility == CardAbility.Parry) ||
+            (playerAbility == CardAbility.Parry && enemyAbility == CardAbility.Attack))
         {
             OnParry(playerValue, attackerValue);
         } else
         {
-            if (_playerAbility == CardAbility.Attack)
+            if (playerAbility == CardAbility.Attack)
             {
                 AttackTarget(_player, _enemyManager.FocussedEnemy, playerValue);
             }
-            else if (_enemyAbility == CardAbility.Attack)
+            else if (enemyAbility == CardAbility.Attack)
             {
                 AttackTarget(_enemyManager.FocussedEnemy, _player, attackerValue);
             }
             
-            if (_playerAbility == CardAbility.Heal)
+            if (playerAbility == CardAbility.Heal)
             {
                 HealTarget(_player, playerValue);
-            } else if (_enemyAbility == CardAbility.Heal)
+            } else if (enemyAbility == CardAbility.Heal)
             {
                 HealTarget(_enemyManager.FocussedEnemy, attackerValue);
             }
@@ -181,7 +204,7 @@ public class BattleManager : MonoBehaviour
     private void OnParry(int playerValue, int attackerValue)
     {
         bool playerWins = playerValue >= attackerValue;
-        CardAbility winnerAbility = playerWins ? _playerAbility : _playerAbility;
+        CardAbility winnerAbility = playerWins ? _playerTurn.ability : _enemyTurn.ability;
         int winnerValue = playerWins ? playerValue : attackerValue;
         int loserValue = playerWins ? attackerValue : playerValue;
         Character winner = playerWins ? _player : _enemyManager.FocussedEnemy;
