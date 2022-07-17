@@ -14,37 +14,23 @@ public enum SceneType
 
 public class MainMenuManager : MonoBehaviour
 {
-    public CanvasGroup overlay;
+    public Overlay overlay;
     public RectTransform logo;
 
     private void Start()
     {
-        ShowOverlay(false);
+        overlay.ShowOverlay(false);
         AnimateLogo();
 
-        SoundManager.Instance.Play(Sounds.menuMusic, true);
-    }
-
-    private IEnumerator LoadBattleScene()
-    {
-        ShowOverlay(true);
-
-        yield return new WaitForSeconds(0.5f);
-
-        SceneManager.LoadScene((int)SceneType.mainBattle);
+        SoundManager.Instance.Play(Sounds.menuMusic, true, 0.3f);
     }
 
     public void FightButton()
     {
-        StartCoroutine(LoadBattleScene());
-    }
-
-    public void ShowOverlay(bool show)
-    {
-        if (show)
-            overlay.DOFade(1.0f, 0.5f);
-        else
-            overlay.DOFade(0.0f, 0.5f);
+        overlay.ShowOverlay(true, () =>
+        {
+            SceneManager.LoadScene((int)SceneType.mainBattle);
+        });
     }
 
     private void AnimateLogo()

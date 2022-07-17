@@ -23,7 +23,7 @@ public class EnemyManager : MonoBehaviour
         _focussedEnemyIndex = -1;
     }
 
-    internal void NextEnemy()
+    internal bool NextEnemy()
     {
         if (currentEnemy != null)
             Destroy(currentEnemy.gameObject);
@@ -32,6 +32,14 @@ public class EnemyManager : MonoBehaviour
         enemyField.anchoredPosition = new Vector2(500, enemyField.anchoredPosition.y);
 
         _focussedEnemyIndex++;
+        
+        // No more enemies to fight!
+        if (_focussedEnemyIndex >= characterSkins.Length)
+        {
+            _focussedEnemyIndex = 0;
+            return false;
+        }
+
         currentEnemy = Instantiate(enemyPrefab, enemyField.transform);
         currentEnemy.spineHandler.ChangeSkin(characterSkins[_focussedEnemyIndex]);
 
@@ -39,5 +47,7 @@ public class EnemyManager : MonoBehaviour
         enemyField.DOAnchorPos(new Vector2(startPosX, enemyField.anchoredPosition.y), 0.5f)
             .SetEase(Ease.InOutSine)
             .OnComplete(() => { NextEnemyAppeared?.Invoke(); });
+
+        return true;
     }
 }

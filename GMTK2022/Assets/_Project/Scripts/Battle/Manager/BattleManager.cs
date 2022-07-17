@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -24,28 +25,47 @@ public class BattleManager : MonoBehaviour
     private Vector3 _chargeRotate = new Vector3(0, 0, 6);
 
     public ActiveAbilitiesPanel activeAbilitiesPanel;
+    public ProgressionText _progressionText;
+    public Overlay overlay;
 
     private void Start()
     {
-        SoundManager.Instance.Play(Sounds.battleMusic, true, 0.8f);
-        StartBattle(true);
+        overlay.ShowOverlay(false, () =>
+        {
+            SoundManager.Instance.Play(Sounds.battleMusic, true, 0.3f);
+            _player.GetComponent<RectTransform>().DOAnchorPosX(170f, 0.5f).SetEase(Ease.InOutSine).OnComplete(() =>
+            {
+                StartBattle(true);
+            });
+        });
     }
 
     private void StartBattle(bool initialize = false)
     {
-        _currentPhase = (BattlePhase)0;
-        EnemyManager.NextEnemyAppeared += OnNextEnemyAppeared;
-        
         if (!initialize)
             _player.ResetStats();
-            
-        _enemyManager.NextEnemy();
+
+        EnemyManager.NextEnemyAppeared += OnNextEnemyAppeared;
+        bool hasEnemy = _enemyManager.NextEnemy();
+
+        if (!hasEnemy)
+        {
+            EnemyManager.NextEnemyAppeared -= OnNextEnemyAppeared;
+            _progressionText.ShowNewPhase(ProgressionPhase.Win, () =>
+            {
+                _player.SayDialogue("I AM FREEEEE!!");
+                overlay.ShowOverlay(true, () =>
+                {
+                    SceneManager.LoadScene((int)SceneType.mainMenu);
+                });
+            });
+        }
     }
 
     private void OnNextEnemyAppeared()
     {
         EnemyManager.NextEnemyAppeared -= OnNextEnemyAppeared;
-        NextPhase(false);
+        InitializeBattle();
     }
 
     private void NextPhase(bool change = true)
@@ -53,11 +73,9 @@ public class BattleManager : MonoBehaviour
         if (change)
             _currentPhase = _currentPhase.Next();
 
+        Debug.Log("Next phase: " + _currentPhase);
         switch (_currentPhase)
         {
-            case BattlePhase.Initialize:
-                InitializeBattle();
-                break;
             case BattlePhase.PickAbility:
                 CardsManager.CardPicked += OnAbilityPicked;
                 activeAbilitiesPanel.ShowActiveAbility(false, false);
@@ -78,22 +96,19 @@ public class BattleManager : MonoBehaviour
 
     private void InitializeBattle()
     {
-        ShowPlayer(true);
-
-        _player.SayDialogue("I need to\nget the f*** away\nfrom this place!");
-        _enemyManager.FocussedEnemy.SayDialogue("You ain't runnin' away!");
-
+        Debug.Log("initialize battle");
         _playerTurn = new TurnData(_player);
         _enemyTurn = new TurnData(_enemyManager.FocussedEnemy);
-        NextPhase();
-    }
+        _currentPhase = (BattlePhase)0;
+        
+        _progressionText.ShowNewPhase(ProgressionPhase.Fight, () =>
+        {
+            _player.SayDialogue("I need to\nget the f*** away\nfrom this place!");
+            _enemyManager.FocussedEnemy.SayDialogue("You ain't runnin' away!");
+            NextPhase(false);
+        });
 
-    private void ShowPlayer(bool show)
-    {
-        if (show)
-            _player.GetComponent<RectTransform>().DOAnchorPosX(170f, 0.5f).SetEase(Ease.InOutSine);
-        else
-            _player.GetComponent<RectTransform>().DOAnchorPosX(-500f, 0.5f).SetEase(Ease.InOutSine);
+        
     }
 
     private void OnAbilityPicked(CardAbility ability)
@@ -135,8 +150,13 @@ public class BattleManager : MonoBehaviour
         CardAbility playerAbility = _playerTurn.ability;
         CardAbility enemyAbility = _enemyTurn.ability;
 
-        if (playerValue > attackerValue) activeAbilitiesPanel.ShowActiveAbility(false, false);
-        else if (attackerValue > playerValue) activeAbilitiesPanel.ShowActiveAbility(true, false);
+        bool bothHeal = (playerAbility == CardAbility.Heal && enemyAbility == CardAbility.Heal);
+        bool bothParry = (playerAbility == CardAbility.Parry && enemyAbility == CardAbility.Parry);
+
+        if (playerValue > attackerValue && (!bothHeal) && (!bothParry))
+            activeAbilitiesPanel.ShowActiveAbility(false, false);
+        else if (attackerValue > playerValue && (!bothHeal) && (!bothParry))
+            activeAbilitiesPanel.ShowActiveAbility(true, false);
         else
         {
             activeAbilitiesPanel.ShowActiveAbility(false, false);
@@ -180,11 +200,13 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        // TESTING
+
+        // Iewl, After the ability is done (Just a constant delay atm..), go to the next phase
         IEnumerator waitForNextPhase()
         {
             yield return new WaitForSeconds(nextPhaseDelay);
-            NextPhase();
+            if (!_playerTurn.character.IsDead && !_enemyTurn.character.IsDead)
+                NextPhase();
         }
         StartCoroutine(waitForNextPhase());
     }
@@ -283,16 +305,26 @@ public class BattleManager : MonoBehaviour
 
     private void OnTargetKilled(Character target)
     {
+        activeAbilitiesPanel.ShowActiveAbility(false, false);
+
         target.PlayAnimation("die", false, true);
         Sequence dieSequence = DOTween.Sequence();
         dieSequence.Append(target.statusGroup.DOFade(0, 0.5f));
+        dieSequence.Join(target.dialogueBox.DOFade(0, 0.5f));
         dieSequence.Join(target.shadow.DOFade(0, 0.5f));
         dieSequence.AppendInterval(2f);
         dieSequence.Play().OnComplete(() => 
         {
             if (target == _player)
             {
-                Debug.Log("You lost");
+                _progressionText.ShowNewPhase(ProgressionPhase.GameOver, () =>
+                {
+                    _player.SayDialogue("Atleast I won't roll anymore..");
+                    overlay.ShowOverlay(true, () =>
+                    {
+                        SceneManager.LoadScene((int)SceneType.mainMenu);
+                    });
+                });
             }
             else
             {

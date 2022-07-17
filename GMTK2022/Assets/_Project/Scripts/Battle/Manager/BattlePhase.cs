@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum BattlePhase
 {
-    Initialize,
     PickAbility,
     ThrowDice,
     Ability

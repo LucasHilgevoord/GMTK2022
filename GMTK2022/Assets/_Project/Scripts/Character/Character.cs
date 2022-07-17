@@ -43,7 +43,9 @@ public class Character : MonoBehaviour
     public GameObject _spineObj;
     public SpineHandler spineHandler;
     public string spineSuffix;
-    public ParticleSystem healParticle; 
+    public ParticleSystem healParticle;
+
+    public bool IsDead { get { return currentHealth <= 0; } }
 
     private void Awake()
     {
