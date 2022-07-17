@@ -78,9 +78,22 @@ public class BattleManager : MonoBehaviour
 
     private void InitializeBattle()
     {
+        ShowPlayer(true);
+
+        _player.SayDialogue("I need to\nget the f*** away\nfrom this place!");
+        _enemyManager.FocussedEnemy.SayDialogue("You ain't runnin' away!");
+
         _playerTurn = new TurnData(_player);
         _enemyTurn = new TurnData(_enemyManager.FocussedEnemy);
         NextPhase();
+    }
+
+    private void ShowPlayer(bool show)
+    {
+        if (show)
+            _player.GetComponent<RectTransform>().DOAnchorPosX(170f, 0.5f).SetEase(Ease.InOutSine);
+        else
+            _player.GetComponent<RectTransform>().DOAnchorPosX(-500f, 0.5f).SetEase(Ease.InOutSine);
     }
 
     private void OnAbilityPicked(CardAbility ability)
