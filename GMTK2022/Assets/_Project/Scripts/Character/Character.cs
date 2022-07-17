@@ -43,6 +43,7 @@ public class Character : MonoBehaviour
     public GameObject _spineObj;
     protected SpineHandler spineHandler;
     public string spineSuffix;
+    public ParticleSystem healParticle; 
 
     private void Start()
     {
@@ -104,11 +105,10 @@ public class Character : MonoBehaviour
     public void Heal(int healAmount)
     {
         SayDialogue("Ahhh, feels nice.");
-
         battleEffectHandler.ShowBattleEffect(CharacterInteractionType.healSelf, healAmount);
+        healParticle.Play();
 
         currentHealth = Mathf.Clamp(currentHealth + healAmount, 0, maxHealth) ;
-        //AnimateCharacter(CharacterAnimType.heal);
         UpdateCharacterUI();
     }
     public void AddShield(int shieldAmount)
@@ -118,7 +118,6 @@ public class Character : MonoBehaviour
         battleEffectHandler.ShowBattleEffect(CharacterInteractionType.addShield, shieldAmount);
 
         currentShield = Mathf.Clamp(currentShield + shieldAmount, 0, maxShield);
-        //AnimateCharacter(CharacterAnimType.defend);
         UpdateCharacterUI();
     }
     public void Die()

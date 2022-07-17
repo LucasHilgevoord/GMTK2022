@@ -15,7 +15,6 @@ public class AbilityCard : MonoBehaviour
 {
     public event Action<CardActions, AbilityCard> CardAction;
 
-    [SerializeField] private TextMeshProUGUI _title;
     public RectTransform rect;
     public RectTransform elements;
     public Quaternion startRot;
