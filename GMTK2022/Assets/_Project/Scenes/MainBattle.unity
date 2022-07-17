@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSkins:
-  - enemy_3
+  - enemy_1
   - enemy_2
   - enemy_3
   - enemy_4

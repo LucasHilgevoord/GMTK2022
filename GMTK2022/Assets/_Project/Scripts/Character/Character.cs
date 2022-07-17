@@ -62,7 +62,7 @@ public class Character : MonoBehaviour
         UpdateCharacterUI(true);
     }
 
-    #region virtual-methods
+    #region virtual-methods 
     public void Damage(int damage)
     {
         SayDialogue("OUCH! You think you're sh*t ?!");
